@@ -29,31 +29,29 @@ class _QrState extends State<QrPage> {
       }
     });
 
-    FirebaseVisionImage visionImage = FirebaseVisionImage.fromFile(_image);
+    final visionImage = FirebaseVisionImage.fromFile(_image);
 
-    final BarcodeDetector barcodeDetector = FirebaseVision.instance.barcodeDetector();
+    final barcodeDetector = FirebaseVision.instance.barcodeDetector();
 
-    final List<Barcode> barcodes = await barcodeDetector.detectInImage(visionImage);
+    final barcodes = await barcodeDetector.detectInImage(visionImage);
 
-    for (Barcode barcode in barcodes) {
-
-      final String rawValue = barcode.rawValue;
-      final BarcodeValueType valueType = barcode.valueType;
+    for (final barcode in barcodes) {
+      final rawValue = barcode.rawValue;
+      final valueType = barcode.valueType;
 
       setState(() {
-        text ="$rawValue\nType: $valueType";
+        text = '$rawValue\nType: $valueType';
         print(text);
       });
-
     }
-    if (barcodes.length == 0) {
+    if (barcodes.isEmpty) {
       setState(() {
-        text ='No barcode detected';
+        text = 'No barcode detected';
         print(text);
       });
     }
 
-    barcodeDetector.close();
+    await barcodeDetector.close();
   }
 
   @override
