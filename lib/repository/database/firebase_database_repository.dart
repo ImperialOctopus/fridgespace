@@ -15,9 +15,6 @@ class FirebaseDatabaseRepository implements DatabaseRepository {
 
   @override
   Future<void> pushFoodItem(FoodItem foodItem) async {
-    //print('FoodItem: ' + foodItem.toString());
-    //print('Dict: ' + (foodItem.toJson()).toString());
-
     await FirebaseFirestore.instance
         .collection(user.uid)
         .add(jsonDecode(jsonEncode(foodItem)) as Map<String, dynamic>);
@@ -30,8 +27,8 @@ class FirebaseDatabaseRepository implements DatabaseRepository {
 
     return docs.map<FoodItem>(
       (x) => FoodItem(
-        name: x.get('name').toString(),
-        quantity: x.get('quantity').toString(),
+        name: x.get('name') as String,
+        quantity: x.get('quantity') as String,
       ),
     );
   }
