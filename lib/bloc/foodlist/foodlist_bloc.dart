@@ -3,7 +3,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'foodlist_event.dart';
 import 'foodlist_state.dart';
 
+/// Bloc for user's food list.
 class FoodlistBloc extends Bloc<FoodlistEvent, FoodlistState> {
+  /// Bloc for user's food list.
   FoodlistBloc() : super(FoodlistUnloaded());
 
   @override
@@ -17,6 +19,6 @@ class FoodlistBloc extends Bloc<FoodlistEvent, FoodlistState> {
   }
 
   Stream<FoodlistState> _mapLoadToState(LoadFoodlist event) async* {
-    yield FoodlistLoaded(foodlist: []);
+    yield const FoodlistLoaded(foodlist: []);
   }
 }

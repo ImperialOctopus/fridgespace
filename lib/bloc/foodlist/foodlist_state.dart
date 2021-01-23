@@ -12,6 +12,7 @@ abstract class FoodlistState extends Equatable {
   List<Object> get props => [];
 }
 
+/// Default state.
 class FoodlistUnloaded extends FoodlistState {}
 
 /// Food list is loading.

@@ -76,9 +76,9 @@ class _QrState extends State<QrPage> {
       );
     } else {
       print('product not found, please insert data for ' + barcode);
-      return FoodItem(
-        name: "definately not null",
-        quantity: "over 9000",
+      return const FoodItem(
+        name: 'definately not null',
+        quantity: 'over 9000',
       );
     }
   }

@@ -9,8 +9,10 @@ import 'database_repository.dart';
 
 /// Database implementation using firebase.
 class FirebaseDatabaseRepository implements DatabaseRepository {
+  /// User to get data from.
   final User user;
 
+  /// Database implementation using firebase.
   FirebaseDatabaseRepository({@required this.user});
 
   @override
