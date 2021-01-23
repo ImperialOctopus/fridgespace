@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:firebase_ml_vision/firebase_ml_vision.dart';
+import 'package:openfoodfacts/openfoodfacts.dart';
 
 /// Page to add new foods to the fridge.
 class QrPage extends StatefulWidget {
@@ -29,31 +30,48 @@ class _QrState extends State<QrPage> {
       }
     });
 
-    FirebaseVisionImage visionImage = FirebaseVisionImage.fromFile(_image);
+    var visionImage = FirebaseVisionImage.fromFile(_image);
 
-    final BarcodeDetector barcodeDetector = FirebaseVision.instance.barcodeDetector();
+    final barcodeDetector = FirebaseVision.instance.barcodeDetector();
 
-    final List<Barcode> barcodes = await barcodeDetector.detectInImage(visionImage);
+    final barcodes = await barcodeDetector.detectInImage(visionImage);
 
-    for (Barcode barcode in barcodes) {
+    for (var barcode in barcodes) {
 
-      final String rawValue = barcode.rawValue;
-      final BarcodeValueType valueType = barcode.valueType;
+      final rawValue = barcode.rawValue;
+      final valueType = barcode.valueType;
 
       setState(() {
-        text ="$rawValue\nType: $valueType";
+        text ='$rawValue\nType: $valueType';
         print(text);
+        if (valueType == BarcodeValueType.product){
+          getProduct(rawValue);
+        }
       });
 
     }
-    if (barcodes.length == 0) {
+    if (barcodes.isEmpty) {
       setState(() {
         text ='No barcode detected';
         print(text);
       });
     }
 
-    barcodeDetector.close();
+    await(barcodeDetector.close());
+  }
+
+  Future<Product> getProduct(String barcode) async {
+
+    var configuration = ProductQueryConfiguration(barcode, language: OpenFoodFactsLanguage.ENGLISH, fields: [ProductField.ALL]);
+    var result = await OpenFoodAPIClient.getProduct(configuration);
+
+    if (result.status == 1) {
+      print(result.product.productName);
+      return result.product;
+    } else {
+      print('product not found, please insert data for ' + barcode);
+      return null;
+    }
   }
 
   @override
