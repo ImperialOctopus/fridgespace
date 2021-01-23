@@ -8,4 +8,9 @@ class FoodItem {
 
   final String name;
   final String quantity;
+
+  Map<String, dynamic> toJson() => <String, dynamic>{
+        'name': name,
+        'quantity': quantity,
+      };
 }

@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import '../../repository/database/database_repository.dart';
 import '../../model/food_item.dart';
-import '../../repository/database/firebase_database_repository.dart';
-import '../../bloc/authentication/authentication_bloc.dart';
-import '../../bloc/authentication/authentication_state.dart';
 
 /// Page to list items in the user's fridge.
 class FridgePage extends StatelessWidget {
@@ -12,34 +10,21 @@ class FridgePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<AuthenticationBloc, AuthenticationState>(
-      builder: (context, state) {
-        FirebaseDatabaseRepository db;
-
-        if (state is UserAuthenticated) {
-          print(state.user);
-          db = FirebaseDatabaseRepository(user: state.user);
+    return FutureBuilder<Iterable<FoodItem>>(
+      future: RepositoryProvider.of<DatabaseRepository>(context).getFoodItems(),
+      builder: (context, snapshot) {
+        if (snapshot.hasData) {
+          return ListView(
+              children: snapshot.data
+                  .map<Widget>(
+                    (x) => ListTile(
+                      title: Text(x.name),
+                    ),
+                  )
+                  .toList());
         } else {
-          throw Error();
+          return const Center(child: CircularProgressIndicator());
         }
-
-        return FutureBuilder<Iterable<FoodItem>>(
-          future: db.getFoodItems(),
-          builder: (context, snapshot) {
-            if (snapshot.hasData) {
-              return ListView(
-                  children: snapshot.data
-                      .map<Widget>(
-                        (x) => ListTile(
-                          title: Text(x.name),
-                        ),
-                      )
-                      .toList());
-            } else {
-              return const Center(child: CircularProgressIndicator());
-            }
-          },
-        );
       },
     );
   }

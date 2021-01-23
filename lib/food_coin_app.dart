@@ -93,7 +93,7 @@ class _AppView extends StatelessWidget {
     return BlocBuilder<AuthenticationBloc, AuthenticationState>(
       builder: (context, state) {
         if (state is UserAuthenticated) {
-          return const HomeScreen();
+          return HomeScreen(user: state.user);
         } else {
           return const LoginScreen();
         }

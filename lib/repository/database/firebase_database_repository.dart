@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -12,13 +14,24 @@ class FirebaseDatabaseRepository implements DatabaseRepository {
   FirebaseDatabaseRepository({@required this.user});
 
   @override
+  Future<void> pushFoodItem(FoodItem foodItem) async {
+    //print('FoodItem: ' + foodItem.toString());
+    //print('Dict: ' + (foodItem.toJson()).toString());
+
+    await FirebaseFirestore.instance
+        .collection(user.uid)
+        .add(jsonDecode(jsonEncode(foodItem)) as Map<String, dynamic>);
+  }
+
+  @override
   Future<Iterable<FoodItem>> getFoodItems() async {
     var docs =
         (await FirebaseFirestore.instance.collection(user.uid).get()).docs;
 
     return docs.map<FoodItem>(
       (x) => FoodItem(
-        name: x.get('text').toString(),
+        name: x.get('name').toString(),
+        quantity: x.get('quantity').toString(),
       ),
     );
   }

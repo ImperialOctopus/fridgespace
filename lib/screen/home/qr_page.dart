@@ -1,6 +1,8 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import '../../repository/database/database_repository.dart';
 import '../../model/food_item.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:firebase_ml_vision/firebase_ml_vision.dart';
@@ -20,7 +22,7 @@ class _QrState extends State<QrPage> {
   final picker = ImagePicker();
   var text = '';
 
-  Future getImage() async {
+  Future scanAndSend() async {
     final pickedFile = await picker.getImage(source: ImageSource.camera);
 
     setState(() {
@@ -44,10 +46,13 @@ class _QrState extends State<QrPage> {
       setState(() {
         text = '$rawValue\nType: $valueType';
         print(text);
-        if (valueType == BarcodeValueType.product) {
-          getFoodItem(rawValue);
-        }
       });
+
+      if (valueType == BarcodeValueType.product) {
+        final item = await getFoodItem(rawValue);
+        await RepositoryProvider.of<DatabaseRepository>(context)
+            .pushFoodItem(item);
+      }
     }
     if (barcodes.isEmpty) {
       setState(() {
@@ -71,7 +76,10 @@ class _QrState extends State<QrPage> {
       );
     } else {
       print('product not found, please insert data for ' + barcode);
-      return null;
+      return FoodItem(
+        name: "definately not null",
+        quantity: "over 9000",
+      );
     }
   }
 
@@ -87,7 +95,7 @@ class _QrState extends State<QrPage> {
             : Image.file(_image),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: getImage,
+        onPressed: scanAndSend,
         tooltip: 'Pick Image',
         child: const Icon(Icons.add_a_photo),
       ),
