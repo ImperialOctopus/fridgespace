@@ -13,7 +13,7 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  late int _pageIndex;
+  int _pageIndex;
 
   static const List<Widget> _pages = <Widget>[
     QrPage(),

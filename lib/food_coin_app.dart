@@ -16,7 +16,7 @@ class FoodCoinApp extends StatefulWidget {
 }
 
 class _FoodCoinAppState extends State<FoodCoinApp> {
-  late final Future<FirebaseApp> _firebaseApp;
+  Future<FirebaseApp> _firebaseApp;
 
   @override
   void initState() {
