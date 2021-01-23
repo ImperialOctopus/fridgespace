@@ -1,1 +1,2 @@
-class DatabaseRepository {}
+/// Repository for database.
+abstract class DatabaseRepository {}
