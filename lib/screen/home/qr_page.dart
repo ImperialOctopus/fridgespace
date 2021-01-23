@@ -7,12 +7,9 @@ import 'package:image_picker/image_picker.dart';
 class QrPage extends StatefulWidget {
   /// Page to add new foods to the fridge.
   const QrPage();
-  _QrState createState() => _QrState();
 
   @override
-  Widget build(BuildContext context) {
-    return const Center(child: Text('QR'));
-  }
+  _QrState createState() => _QrState();
 }
 
 class _QrState extends State<QrPage> {
@@ -35,15 +32,17 @@ class _QrState extends State<QrPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Image Picker Example'),
+        title: const Text('Image Picker Example'),
       ),
       body: Center(
-        child: _image == null ? Text('No image selected.') : Image.file(_image),
+        child: _image == null
+            ? const Text('No image selected.')
+            : Image.file(_image),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: getImage,
         tooltip: 'Pick Image',
-        child: Icon(Icons.add_a_photo),
+        child: const Icon(Icons.add_a_photo),
       ),
     );
   }
