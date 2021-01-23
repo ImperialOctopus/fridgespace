@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'loading_page.dart';
+
 /// Screen to display while firebase loads.
 class LoadingScreen extends StatelessWidget {
   /// Screen to display while firebase loads.
@@ -8,9 +10,7 @@ class LoadingScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const Scaffold(
-      body: Center(
-        child: CircularProgressIndicator(),
-      ),
+      body: LoadingPage(),
     );
   }
 }
