@@ -67,6 +67,7 @@ class _QrState extends State<QrPage> {
 
     if (result.status == 1) {
       print(result.product.productName);
+      print(result.product.quantity);
       return result.product;
     } else {
       print('product not found, please insert data for ' + barcode);
