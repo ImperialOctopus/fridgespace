@@ -2,8 +2,8 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 
 import 'screen/firebase_error_screen.dart';
-import 'screen/home/home_screen.dart';
 import 'screen/loading_screen.dart';
+import 'screen/login/login_screen.dart';
 import 'theme/theme.dart';
 
 /// Main app widget.
@@ -58,6 +58,6 @@ class _AppView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const HomeScreen();
+    return const LoginScreen();
   }
 }
