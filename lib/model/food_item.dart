@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 class FoodItem {
   const FoodItem({
     @required this.name,
+    @required this.quantity,
   });
 
   final String name;
-  //final double quantity;
-  //final String unit;
+  final String quantity;
 }

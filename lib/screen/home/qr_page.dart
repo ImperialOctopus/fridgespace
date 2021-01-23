@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import '../../model/food_item.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:firebase_ml_vision/firebase_ml_vision.dart';
 import 'package:openfoodfacts/openfoodfacts.dart';
@@ -37,38 +38,37 @@ class _QrState extends State<QrPage> {
     final barcodes = await barcodeDetector.detectInImage(visionImage);
 
     for (var barcode in barcodes) {
-
       final rawValue = barcode.rawValue;
       final valueType = barcode.valueType;
 
       setState(() {
-        text ='$rawValue\nType: $valueType';
+        text = '$rawValue\nType: $valueType';
         print(text);
-        if (valueType == BarcodeValueType.product){
-          getProduct(rawValue);
+        if (valueType == BarcodeValueType.product) {
+          getFoodItem(rawValue);
         }
       });
-
     }
     if (barcodes.isEmpty) {
       setState(() {
-        text ='No barcode detected';
+        text = 'No barcode detected';
         print(text);
       });
     }
 
-    await(barcodeDetector.close());
+    await (barcodeDetector.close());
   }
 
-  Future<Product> getProduct(String barcode) async {
-
-    var configuration = ProductQueryConfiguration(barcode, language: OpenFoodFactsLanguage.ENGLISH, fields: [ProductField.ALL]);
+  Future<FoodItem> getFoodItem(String barcode) async {
+    var configuration = ProductQueryConfiguration(barcode,
+        language: OpenFoodFactsLanguage.ENGLISH, fields: [ProductField.ALL]);
     var result = await OpenFoodAPIClient.getProduct(configuration);
 
     if (result.status == 1) {
-      print(result.product.productName);
-      print(result.product.quantity);
-      return result.product;
+      return FoodItem(
+        name: result.product.productName,
+        quantity: result.product.quantity,
+      );
     } else {
       print('product not found, please insert data for ' + barcode);
       return null;
