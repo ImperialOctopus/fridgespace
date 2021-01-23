@@ -9,6 +9,7 @@ import 'search_page.dart';
 
 /// Screen containing main app pages.
 class HomeScreen extends StatelessWidget {
+  /// Logged in user object.
   final User user;
 
   @override
