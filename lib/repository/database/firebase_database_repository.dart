@@ -27,9 +27,9 @@ class FirebaseDatabaseRepository implements DatabaseRepository {
 
     return docs.map<FoodItem>(
       (x) => FoodItem(
-        name: x.get('name') as String,
-        quantity: x.get('quantity') as String,
-      ),
+          name: x.get('name') as String,
+          quantity: x.get('quantity') as String,
+          expires: x.get('expires') as DateTime),
     );
   }
 }

@@ -19,6 +19,10 @@ class FridgePage extends StatelessWidget {
                   .map<Widget>(
                     (x) => ListTile(
                       title: Text(x.name),
+                      subtitle: Text('Qty: ' +
+                          (x.quantity ?? 'unknown') +
+                          ' Expires: ' +
+                          (x.expires.toString() ?? 'unknown')),
                     ),
                   )
                   .toList());
