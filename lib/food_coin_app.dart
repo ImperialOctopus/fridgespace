@@ -29,23 +29,25 @@ class _FoodCoinAppState extends State<FoodCoinApp> {
     return MaterialApp(
       title: 'FoodCoin',
       theme: themeData,
-      home: FutureBuilder(
-        // Initialize firebase
-        future: _firebaseApp,
-        builder: (context, snapshot) {
-          // Check for errors
-          if (snapshot.hasError) {
-            return const FirebaseErrorScreen();
-          }
+      home: SafeArea(
+        child: FutureBuilder(
+          // Initialize firebase
+          future: _firebaseApp,
+          builder: (context, snapshot) {
+            // Check for errors
+            if (snapshot.hasError) {
+              return const FirebaseErrorScreen();
+            }
 
-          // Loading complete
-          if (snapshot.connectionState == ConnectionState.done) {
-            return const _AppView();
-          }
+            // Loading complete
+            if (snapshot.connectionState == ConnectionState.done) {
+              return const _AppView();
+            }
 
-          // Future hasn't completed
-          return const LoadingScreen();
-        },
+            // Future hasn't completed
+            return const LoadingScreen();
+          },
+        ),
       ),
     );
   }
