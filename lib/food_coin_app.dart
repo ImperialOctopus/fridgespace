@@ -26,38 +26,38 @@ class _FoodCoinAppState extends State<FoodCoinApp> {
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder(
-      // Initialize firebase
-      future: _firebaseApp,
-      builder: (context, snapshot) {
-        // Check for errors
-        if (snapshot.hasError) {
-          return const FirebaseErrorScreen();
-        }
+    return MaterialApp(
+      title: 'FoodCoin',
+      theme: themeData,
+      home: FutureBuilder(
+        // Initialize firebase
+        future: _firebaseApp,
+        builder: (context, snapshot) {
+          // Check for errors
+          if (snapshot.hasError) {
+            return const FirebaseErrorScreen();
+          }
 
-        // Loading complete
-        if (snapshot.connectionState == ConnectionState.done) {
-          return const _AppView();
-        }
+          // Loading complete
+          if (snapshot.connectionState == ConnectionState.done) {
+            return const _AppView();
+          }
 
-        // Future hasn't completed
-        return const LoadingScreen();
-      },
+          // Future hasn't completed
+          return const LoadingScreen();
+        },
+      ),
     );
   }
 }
 
-/// Main app view that consumes blocs.
+/// Main app view.
 class _AppView extends StatelessWidget {
   /// Const constructor.
   const _AppView();
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'FoodCoin',
-      theme: themeData,
-      home: const HomeScreen(),
-    );
+    return const HomeScreen();
   }
 }
