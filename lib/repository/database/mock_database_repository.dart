@@ -61,9 +61,9 @@ class MockDatabaseRepository implements DatabaseRepository {
   }
 
   @override
-  Future<String> addBubble(Bubble bubble) async {
+  Future<String> createBubble(String name) async {
     final id = DateTime.now().millisecondsSinceEpoch.toString();
-    _bubbles[id] = bubble;
+    _bubbles[id] = Bubble(name: name, memberIds: []);
     _bubbleStreamController.add(_bubbles.values);
     return id;
   }

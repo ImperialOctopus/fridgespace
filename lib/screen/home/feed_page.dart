@@ -24,7 +24,7 @@ class FeedPage extends StatelessWidget {
                       (Offer x) => ListTile(
                         leading: Image.network(
                           x.offerer.pictureUrl,
-                          width: 50,
+                          width: 60,
                         ),
                         title: Text(x.foodItem.name),
                         subtitle: Text('Qty: ' +

@@ -82,7 +82,7 @@ class FirebaseDatabaseRepository implements DatabaseRepository {
   }
 
   @override
-  Future<String> addBubble(Bubble bubble) async {
+  Future<String> createBubble(String name) async {
     String id;
     DocumentReference docRef;
     DocumentSnapshot doc;
@@ -96,7 +96,7 @@ class FirebaseDatabaseRepository implements DatabaseRepository {
     await FirebaseFirestore.instance
         .collection('bubbles')
         .doc(id)
-        .set(bubble.toJson());
+        .set(Bubble(name: name, memberIds: []).toJson());
 
     return id;
   }
