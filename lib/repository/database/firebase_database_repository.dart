@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:fridgespace/exception/join_bubble_exception.dart';
 
 import '../../model/bubble.dart';
 import '../../model/food_item.dart';
@@ -86,16 +87,16 @@ class FirebaseDatabaseRepository implements DatabaseRepository {
         await FirebaseFirestore.instance.collection('bubbles').doc(id).get();
 
     if (!bubble.exists) {
-      return;
-    } else {
-      // Add user to bubble
-      await FirebaseFirestore.instance
-          .collection('bubbles')
-          .doc(id)
-          .update(<String, dynamic>{
-        'memberIds': FieldValue.arrayUnion(<dynamic>[user.uid])
-      });
+      throw const JoinBubbleException('Bubble did not exist');
     }
+
+    // Add user to bubble
+    await FirebaseFirestore.instance
+        .collection('bubbles')
+        .doc(id)
+        .update(<String, dynamic>{
+      'memberIds': FieldValue.arrayUnion(<dynamic>[user.uid])
+    });
 
     final userRecord = await FirebaseFirestore.instance
         .collection('users')
