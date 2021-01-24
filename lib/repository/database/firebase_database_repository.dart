@@ -34,11 +34,11 @@ class FirebaseDatabaseRepository implements DatabaseRepository {
         .get();
 
     if (userRecord.exists) {
-      var docs = userRecord.get('fridge') as List<dynamic>;
+      final docs = userRecord.get('fridge') as List<dynamic>;
 
       return docs.map<FoodItem>((dynamic e) {
-        var fields = e as Map<String, dynamic>;
-        var date = fields['expires'] as Timestamp;
+        final fields = e as Map<String, dynamic>;
+        final date = fields['expires'] as Timestamp;
 
         return FoodItem(
             name: fields['name'].toString(),
@@ -47,7 +47,6 @@ class FirebaseDatabaseRepository implements DatabaseRepository {
             shared: fields['shared'] as bool);
       });
     } else {
-      print('Does not exist for user: ' + user.uid);
       return [];
     }
   }
@@ -73,7 +72,6 @@ class FirebaseDatabaseRepository implements DatabaseRepository {
               shared: fields['shared'] as bool);
         });
       } else {
-        print('Does not exist for user: ' + user.uid);
         return <FoodItem>[];
       }
     });
@@ -83,16 +81,19 @@ class FirebaseDatabaseRepository implements DatabaseRepository {
   Future<String> addBubble(Bubble bubble) async {
     String id;
     DocumentReference docRef;
+    DocumentSnapshot doc;
 
     do {
       id = _getRandomString(5);
-      docRef = await FirebaseFirestore.instance.collection('bubbles').doc(id);
-    } while ((await docRef.get()).exists);
+      print('id: ' + id);
+      docRef = FirebaseFirestore.instance.collection('bubbles').doc(id);
+      doc = await docRef.get();
+    } while (doc.exists);
 
     await FirebaseFirestore.instance
         .collection('bubbles')
         .doc(id)
-        .update(bubble.toJson());
+        .set(bubble.toJson());
 
     return id;
   }
@@ -117,11 +118,59 @@ class FirebaseDatabaseRepository implements DatabaseRepository {
   }
 
   @override
-  Future<Iterable<Bubble>> getBubbles() async {
-    return (await FirebaseFirestore.instance
-        .collection('user')
+  Future<Iterable<String>> getBubbleIds() async {
+    final userRecord = await FirebaseFirestore.instance
+        .collection('users')
         .doc(user.uid)
-        .get())['bubbles'] as List<Bubble>;
+        .get();
+
+    if (userRecord.exists) {
+      final docs = userRecord.get('bubbles') as List<dynamic>;
+
+      return docs.map<String>((dynamic e) {
+        return e as String;
+      });
+    } else {
+      return [];
+    }
+  }
+
+  @override
+  Future<Bubble> getBubble(String id) async {
+    final bubble =
+        await FirebaseFirestore.instance.collection('bubbles').doc(id).get();
+
+    if (bubble.exists) {
+      final memberIds = bubble['memberIds'] as List<dynamic>;
+
+      return Bubble(
+        name: bubble['name'].toString(),
+        memberIds: memberIds.map<String>((dynamic e) {
+          return e as String;
+        }),
+      );
+    } else {
+      return null;
+    }
+  }
+
+  @override
+  Stream<Iterable<Bubble>> get bubbleStream {
+    return FirebaseFirestore.instance
+        .collection('users')
+        .doc(user.uid)
+        .snapshots()
+        .asyncMap((userRecord) async {
+      if (userRecord.exists) {
+        var bubbleIds = userRecord.get('bubbles') as List<String>;
+
+        return Future.wait(bubbleIds.map<Future<Bubble>>((String id) {
+          return getBubble(id);
+        }));
+      } else {
+        return <Bubble>[];
+      }
+    });
   }
 
   String _getRandomString(int length) {
