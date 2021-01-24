@@ -29,28 +29,29 @@ class BubblesPage extends StatelessWidget {
                         child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: <Widget>[
-                          Padding(
-                              padding:
+                              Padding(
+                                  padding:
                                   const EdgeInsets.symmetric(horizontal: 10.0),
-                              child: Text(
-                                  'Bubble: ${list.elementAt(index).name}')),
-                          Padding(
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 10.0, vertical: 4.0),
-                              child: RaisedButton(
-                                  onPressed: () => RepositoryProvider.of<
+                                  child: Text(
+                                      'Bubble: ${list.elementAt(index).name}')),
+                              Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 10.0, vertical: 4.0),
+                                  child: RaisedButton(
+                                      onPressed: () => RepositoryProvider.of<
                                           BubbleJoinService>(context)
-                                      .leaveBubble(list.elementAt(index).id),
-                                  child: const Text('Leave Bubble')))
-                        ])),
+                                          .leaveBubble(list.elementAt(index).id),
+                                      child: const Text('Leave Bubble')))
+                            ])),
                   );
                 } else {
-                  return const FlatButton(
-                      onPressed: null, child: Text('Create Bubble'));
+                  return TextButton(
+                      onPressed: () => _openCreateBubblesPage(context),
+                      child: const Text('Create Bubble'));
                 }
               },
               separatorBuilder: (BuildContext context, int index) =>
-                  const Divider(),
+              const Divider(),
             ),
           );
         } else {
