@@ -27,7 +27,9 @@ class _AddItemScreenState extends State<AddItemScreen> {
   void initState() {
     super.initState();
     _nameController = TextEditingController();
+    _nameController.text = widget.lookupResult?.name;
     _quantityController = TextEditingController();
+    _quantityController.text = widget.lookupResult?.quantity;
   }
 
   DateTime _selectedDate;
@@ -85,7 +87,9 @@ class _AddItemScreenState extends State<AddItemScreen> {
           TextFormField(
             controller: _nameController,
             decoration: const InputDecoration(
-                border: InputBorder.none, labelText: 'Item Name'),
+                border: InputBorder.none,
+                labelText: 'Item Name',
+            ),
             validator: (value) {
               if (value.isEmpty) {
                 return 'Please enter some text';
