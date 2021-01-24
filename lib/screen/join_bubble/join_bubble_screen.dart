@@ -6,7 +6,11 @@ import '../../bloc/bubble/bubble_bloc.dart';
 import '../../bloc/bubble/bubble_event.dart';
 import '../../extension/uppercase_text_formatter.dart';
 
+/// Page to join a bubble.
 class JoinBubbleScreen extends StatefulWidget {
+  /// Page to join a bubble.
+  const JoinBubbleScreen();
+
   @override
   _JoinBubbleScreenState createState() => _JoinBubbleScreenState();
 }
@@ -17,7 +21,12 @@ class _JoinBubbleScreenState extends State<JoinBubbleScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(
+        leading: IconButton(
+          icon: const Icon(Icons.close),
+          onPressed: () => Navigator.of(context).pop(),
+        ),
+      ),
       body: Center(
         child: Column(
           children: [
