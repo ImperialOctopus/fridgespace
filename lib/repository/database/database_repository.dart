@@ -19,5 +19,8 @@ abstract class DatabaseRepository {
   Future<void> joinBubble(String bubble);
 
   /// Fetch list of user's bubbles.
-  Future<Iterable<Bubble>> getBubbles();
+  Future<Iterable<String>> getBubbleIds();
+
+  /// Fetch a bubble by ID
+  Future<Iterable<String>> getBubble(String id);
 }

@@ -11,13 +11,6 @@ class FridgePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // RepositoryProvider.of<DatabaseRepository>(context).addFoodItem(FoodItem(
-    //   name: "Cheese",
-    //   quantity: "",
-    //   expires: DateTime(2020),
-    //   shared: false,
-    // ));
-
     return FutureBuilder<Iterable<FoodItem>>(
       future: RepositoryProvider.of<DatabaseRepository>(context).getFoodItems(),
       builder: (context, snapshot) {
