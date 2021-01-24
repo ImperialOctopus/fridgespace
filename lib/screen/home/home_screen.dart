@@ -80,6 +80,7 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Widget _buildFloatingActionButton(int pageIndex) {
+    print(pageIndex);
     // QR page
     if (pageIndex == 0 || pageIndex == 1) {
       return FloatingActionButton(
@@ -90,7 +91,7 @@ class _HomeScreenState extends State<HomeScreen> {
     }
     // Bubbles
     if (pageIndex == 2) {
-      FloatingActionButton(
+      return FloatingActionButton(
         onPressed: _onJoinBubblePressed,
         tooltip: 'Join Bubble',
         child: const Icon(Icons.add),
