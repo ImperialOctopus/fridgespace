@@ -4,6 +4,7 @@ import '../../model/bubble.dart';
 import '../../model/food_item.dart';
 import 'database_repository.dart';
 
+/// Offline fake database for testing.
 class MockDatabaseRepository implements DatabaseRepository {
   static const String _memberId = 'ourMemberId';
 
@@ -21,6 +22,7 @@ class MockDatabaseRepository implements DatabaseRepository {
 
   final _bubbleStreamController = StreamController<Iterable<Bubble>>();
 
+  /// Offline fake database for testing.
   MockDatabaseRepository() {
     _foodStreamController.stream.listen((event) {
       _mostRecentFood = event;

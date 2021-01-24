@@ -5,6 +5,7 @@ import '../../bloc/bubble/bubble_state.dart';
 
 /// Page to display user's bubbles.
 class BubblesPage extends StatelessWidget {
+  /// Page to display user's bubbles.
   const BubblesPage();
 
   @override
