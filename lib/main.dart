@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'food_coin_app.dart';
+import 'fridge_space_app.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
