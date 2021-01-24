@@ -17,30 +17,35 @@ class FridgePage extends StatelessWidget {
         print(state);
 
         if (state is FoodlistLoaded) {
-          print(state.foodlist.length);
-          return ListView(
-              children: state.foodlist
-                  .map<Widget>(
-                    (x) => ListTile(
-                      title: Text(x.name),
-                      subtitle: Text('Qty: ' +
-                          (x.quantity ?? 'unknown') +
-                          '\nExpires: ' +
-                          (x.expires != null
-                              ? DateFormat('dd/MM/yy').format(x.expires)
-                              : 'unknown')),
-                      trailing: IconButton(
-                        icon: Icon(
-                          Icons.share,
-                          color: x.shared ? Colors.pink : Colors.grey,
+          if (state.foodlist.isNotEmpty) {
+            return ListView(
+                children: state.foodlist
+                    .map<Widget>(
+                      (x) => ListTile(
+                        title: Text(x.name),
+                        subtitle: Text('Qty: ' +
+                            (x.quantity ?? 'unknown') +
+                            '\nExpires: ' +
+                            (x.expires != null
+                                ? DateFormat('dd/MM/yy').format(x.expires)
+                                : 'unknown')),
+                        trailing: IconButton(
+                          icon: Icon(
+                            Icons.share,
+                            color: x.shared ? Colors.pink : Colors.grey,
+                          ),
+                          onPressed: () {},
                         ),
-                        onPressed: () {},
+                        contentPadding: const EdgeInsets.symmetric(
+                            vertical: 10, horizontal: 20),
                       ),
-                      contentPadding: const EdgeInsets.symmetric(
-                          vertical: 10, horizontal: 20),
-                    ),
-                  )
-                  .toList());
+                    )
+                    .toList());
+          } else {
+            return const Center(
+              child: Text('Your fridge is empty, wanna go Sains?'),
+            );
+          }
         } else if (state is FoodlistError) {
           return Center(child: Text('Error: ' + state.message));
         } else {
