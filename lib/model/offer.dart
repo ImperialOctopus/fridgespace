@@ -1,5 +1,3 @@
-import 'dart:html';
-
 import 'package:flutter/cupertino.dart';
 
 import 'food_item.dart';
@@ -10,7 +8,7 @@ class Offer {
   final String offerer;
 
   /// Name of person offering.
-  final Url profileImage;
+  final String profileImage;
 
   /// Food item on offer.
   final FoodItem foodItem;

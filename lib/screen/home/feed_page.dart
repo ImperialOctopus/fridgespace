@@ -22,6 +22,10 @@ class FeedPage extends StatelessWidget {
               children: state.offers
                   .map<Widget>(
                     (Offer x) => ListTile(
+                      leading: Image.network(
+                        x.profileImage,
+                        width: 50,
+                      ),
                       title: Text(x.foodItem.name),
                       subtitle: Text('Qty: ' +
                           (x.foodItem.quantity ?? 'unknown') +
