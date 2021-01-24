@@ -6,9 +6,23 @@ import '../../model/offer.dart';
 import 'package:intl/intl.dart';
 
 /// Page to list items on offer in the user's bubbles.
-class FeedPage extends StatelessWidget {
+class FeedPage extends StatefulWidget {
   /// Page to list items on offer in the user's bubbles.
   const FeedPage();
+
+  @override
+  _FeedPageState createState() => _FeedPageState();
+}
+
+class _FeedPageState extends State<FeedPage> {
+  List<Offer> _selectedOffers;
+
+  @override
+  void initState() {
+    super.initState();
+
+    _selectedOffers = [];
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -41,11 +55,13 @@ class FeedPage extends StatelessWidget {
                           style: const TextStyle(fontSize: 16),
                         ),
                         trailing: IconButton(
-                          icon: const Icon(
+                          icon: Icon(
                             Icons.favorite,
-                            color: Colors.pink,
+                            color: _selectedOffers.contains(x)
+                                ? Colors.pink
+                                : Colors.grey,
                           ),
-                          onPressed: () {},
+                          onPressed: () => _toggleOffer(x),
                         ),
                         contentPadding: const EdgeInsets.symmetric(
                             vertical: 10, horizontal: 20),
@@ -60,5 +76,13 @@ class FeedPage extends StatelessWidget {
         }
       },
     );
+  }
+
+  void _toggleOffer(Offer offer) {
+    setState(() {
+      if (!_selectedOffers.remove(offer)) {
+        _selectedOffers.add(offer);
+      }
+    });
   }
 }

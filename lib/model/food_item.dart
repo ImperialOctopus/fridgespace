@@ -1,7 +1,8 @@
+import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 
 /// Model of an item of food.
-class FoodItem {
+class FoodItem extends Equatable {
   /// Unique identifier.
   final String uuid;
 
@@ -33,4 +34,7 @@ class FoodItem {
         'expires': expires,
         'shared': shared,
       };
+
+  @override
+  List<Object> get props => [uuid, name, quantity, expires, shared];
 }

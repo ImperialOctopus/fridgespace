@@ -1,10 +1,11 @@
+import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 
 import 'food_item.dart';
 import 'user_profile.dart';
 
 /// Model of a bubble of users.
-class Offer {
+class Offer extends Equatable {
   /// Name of person offering.
   final UserProfile offerer;
 
@@ -16,4 +17,7 @@ class Offer {
     @required this.offerer,
     @required this.foodItem,
   });
+
+  @override
+  List<Object> get props => [offerer, foodItem];
 }
