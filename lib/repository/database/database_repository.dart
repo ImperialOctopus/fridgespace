@@ -26,4 +26,7 @@ abstract class DatabaseRepository {
 
   /// Fetch a bubble by ID
   Future<Bubble> getBubble(String id);
+
+  /// Gets all food items owned by a user.
+  Future<Iterable<FoodItem>> getFoodItemsFromUser(String id);
 }
