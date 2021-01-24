@@ -140,8 +140,12 @@ class _HomeScreenState extends State<_HomeScreenPages> {
     }
 
     // Push add item page.
-    return Navigator.of(context).push<void>(MaterialPageRoute<void>(
-        builder: (context) => AddItemScreen(lookupResult: lookup)));
+    return Navigator.of(context).push<void>(
+      MaterialPageRoute<void>(
+        builder: (context) => AddItemScreen(lookupResult: lookup),
+        fullscreenDialog: true,
+      ),
+    );
   }
 
   Future<ProductLookupResult> _processBarcodeFile(File file) async {
