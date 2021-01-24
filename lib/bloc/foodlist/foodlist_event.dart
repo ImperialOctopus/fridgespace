@@ -30,6 +30,18 @@ class AddFoodItem extends FoodlistEvent {
   List<Object> get props => [foodItem];
 }
 
+/// Toggle sharing on an item.
+class ToggleFoodShared extends FoodlistEvent {
+  /// Item to toggle.
+  final FoodItem foodItem;
+
+  /// Toggle sharing on an item.
+  const ToggleFoodShared({@required this.foodItem});
+
+  @override
+  List<Object> get props => [foodItem];
+}
+
 /// Food list was changed by the server.
 class FoodlistChanged extends FoodlistEvent {
   /// New list of food.
