@@ -53,7 +53,7 @@ class BubblesPage extends StatelessWidget {
                 }
               },
               separatorBuilder: (BuildContext context, int index) =>
-              const Divider(),
+                  const Divider(),
             ),
           );
         } else {
@@ -66,8 +66,8 @@ class BubblesPage extends StatelessWidget {
         }
       } else if (state is BubbleError) {
         return const Center(
-            child: Text('Error fetching your bubbles.'),
-          );
+          child: Text('Error fetching your bubbles.'),
+        );
       } else {
         return const Scaffold(
           body: Center(

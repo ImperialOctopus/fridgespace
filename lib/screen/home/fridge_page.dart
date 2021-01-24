@@ -22,13 +22,20 @@ class FridgePage extends StatelessWidget {
                 children: state.foodlist
                     .map<Widget>(
                       (x) => ListTile(
-                        title: Text(x.name),
-                        subtitle: Text('Qty: ' +
-                            (x.quantity ?? 'unknown') +
-                            '\nExpires: ' +
-                            (x.expires != null
-                                ? DateFormat('dd/MM/yy').format(x.expires)
-                                : 'unknown')),
+                        title: Text(
+                          x.name,
+                          style: const TextStyle(fontSize: 18),
+                        ),
+                        subtitle: Text(
+                          'Quantity: ' +
+                              (x.quantity ?? 'unknown') +
+                              (x.expires != null
+                                  ? '\nExpires: ' +
+                                      DateFormat('dd/MM/yy').format(x.expires)
+                                  : ''),
+                          style: const TextStyle(fontSize: 16),
+                        ),
+                        isThreeLine: false,
                         trailing: IconButton(
                           icon: Icon(
                             Icons.share,
