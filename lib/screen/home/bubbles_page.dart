@@ -33,7 +33,7 @@ class BubblesPage extends StatelessWidget {
                               padding:
                                   const EdgeInsets.symmetric(horizontal: 10.0),
                               child: Text(
-                                  'Bubble: ${list.elementAt(index).name} \n Code: ${list.elementAt(index).id}')),
+                                  'Bubble: ${list.elementAt(index).name} \nCode: ${list.elementAt(index).id}')),
                           Padding(
                               padding: const EdgeInsets.symmetric(
                                   horizontal: 10.0, vertical: 4.0),

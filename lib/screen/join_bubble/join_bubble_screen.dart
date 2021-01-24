@@ -75,6 +75,7 @@ class _JoinBubbleScreenState extends State<JoinBubbleScreen> {
                                       content: Text(
                                           'Successfully joined a new bubble!')),
                                 );
+
                                 Navigator.of(context).pop();
                               } on JoinBubbleException catch (e) {
                                 setState(() {
