@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 
 /// Model of a bubble of users.
 class Bubble {
+  /// 5 letter identifier of bubble.
+  final String id;
+
   /// Name of bubble.
   final String name;
 
@@ -10,6 +13,7 @@ class Bubble {
 
   /// Model of an item of food.
   const Bubble({
+    @required this.id,
     @required this.name,
     @required this.memberIds,
   });

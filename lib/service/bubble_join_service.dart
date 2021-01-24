@@ -18,6 +18,5 @@ class BubbleJoinService {
       _databaseRepository.createBubble(name);
 
   /// Leave a bubble.
-  Future<void> leaveBubble(String name) =>
-      _databaseRepository.leaveBubble(name);
+  Future<void> leaveBubble(String id) => _databaseRepository.leaveBubble(id);
 }

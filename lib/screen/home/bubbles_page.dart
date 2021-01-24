@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
+import '../../service/bubble_join_service.dart';
 import '../../bloc/bubble/bubble_bloc.dart';
 import '../../bloc/bubble/bubble_state.dart';
 import '../join_bubble/create_bubble_screen.dart';
@@ -34,17 +34,19 @@ class BubblesPage extends StatelessWidget {
                                   const EdgeInsets.symmetric(horizontal: 10.0),
                               child: Text(
                                   'Bubble: ${list.elementAt(index).name}')),
-                          const Padding(
-                              padding: EdgeInsets.symmetric(
+                          Padding(
+                              padding: const EdgeInsets.symmetric(
                                   horizontal: 10.0, vertical: 4.0),
                               child: RaisedButton(
-                                  onPressed: null, child: Text('Leave Bubble')))
+                                  onPressed: () => RepositoryProvider.of<
+                                          BubbleJoinService>(context)
+                                      .leaveBubble(list.elementAt(index).id),
+                                  child: const Text('Leave Bubble')))
                         ])),
                   );
                 } else {
-                  return TextButton(
-                      onPressed: () => _openCreateBubblesPage(context),
-                      child: const Text('Create Bubble'));
+                  return const FlatButton(
+                      onPressed: null, child: Text('Create Bubble'));
                 }
               },
               separatorBuilder: (BuildContext context, int index) =>

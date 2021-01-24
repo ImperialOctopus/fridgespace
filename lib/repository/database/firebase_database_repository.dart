@@ -96,7 +96,7 @@ class FirebaseDatabaseRepository implements DatabaseRepository {
     await FirebaseFirestore.instance
         .collection('bubbles')
         .doc(id)
-        .set(Bubble(name: name, memberIds: []).toJson());
+        .set(Bubble(id: id, name: name, memberIds: []).toJson());
 
     return id;
   }
@@ -168,6 +168,7 @@ class FirebaseDatabaseRepository implements DatabaseRepository {
       final memberIds = bubble['memberIds'] as List<dynamic>;
 
       return Bubble(
+        id: id,
         name: bubble['name'].toString(),
         memberIds: memberIds.map<String>((dynamic e) {
           return e as String;
