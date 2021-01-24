@@ -82,6 +82,18 @@ class FirebaseDatabaseRepository implements DatabaseRepository {
   }
 
   @override
+  Future<void> setFoodSharing(FoodItem foodItem, bool sharing) async {
+    final newFoodItem = FoodItem(
+      uuid: foodItem.uuid,
+      name: foodItem.name,
+      quantity: foodItem.quantity,
+      expires: foodItem.expires,
+      shared: sharing,
+    );
+    await addFoodItem(newFoodItem);
+  }
+
+  @override
   Future<String> createBubble(String name) async {
     String id;
     DocumentReference docRef;
