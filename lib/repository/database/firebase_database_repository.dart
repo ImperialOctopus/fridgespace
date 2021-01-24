@@ -24,7 +24,7 @@ class FirebaseDatabaseRepository implements DatabaseRepository {
         FirebaseFirestore.instance
             .collection('users')
             .doc(user.uid)
-            .set(<String, String>{
+            .update(<String, String>{
           'imageUrl': user.photoURL,
           'name': user.displayName
         });
@@ -32,9 +32,10 @@ class FirebaseDatabaseRepository implements DatabaseRepository {
         FirebaseFirestore.instance
             .collection('users')
             .doc(user.uid)
-            .update(<String, String>{
+            .set(<String, dynamic>{
           'imageUrl': user.photoURL,
-          'name': user.displayName
+          'name': user.displayName,
+          'bubbles': <String>[],
         });
       }
     });
@@ -72,8 +73,7 @@ class FirebaseDatabaseRepository implements DatabaseRepository {
   }
 
   @override
-  Stream<Iterable<FoodItem>> get foodlistStream async*{
-  }
+  Stream<Iterable<FoodItem>> get foodlistStream async* {}
 
   @override
   Future<String> addBubble(Bubble bubble) async {
