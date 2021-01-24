@@ -18,8 +18,7 @@ class FeedBloc extends Bloc<FeedEvent, FeedState> {
   Stream<FeedState> mapEventToState(FeedEvent event) async* {
     if (event is LoadFeed) {
       yield* _mapLoadToState(event);
-    }
-    if (event is FeedReloaded) {
+    } else if (event is FeedReloaded) {
       yield FeedLoaded(offers: event.newOffers);
     } else {
       throw FallThroughError();

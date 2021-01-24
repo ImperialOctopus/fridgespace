@@ -37,9 +37,11 @@ class _CreateBubbleScreenState extends State<CreateBubbleScreen> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text('Create a Bubble',
-                          style: Theme.of(context).textTheme.headline2),
+                          style: Theme.of(context).textTheme.headline3),
+                      Container(height: 30),
                       const Text("Enter your new bubble's name",
                           style: TextStyle(fontSize: 18)),
+                      Container(height: 15),
                       TextField(
                         controller: _textController,
                         decoration: InputDecoration(
@@ -101,7 +103,8 @@ class _CreateBubbleScreenState extends State<CreateBubbleScreen> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(roomName,
-                          style: Theme.of(context).textTheme.headline2),
+                          style: Theme.of(context).textTheme.headline3),
+                      Container(height: 30),
                       Text(roomCode,
                           style: Theme.of(context).textTheme.subtitle1)
                     ],
