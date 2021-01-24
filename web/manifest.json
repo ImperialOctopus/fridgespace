@@ -1,6 +1,6 @@
 {
-    "name": "foodcoin",
-    "short_name": "foodcoin",
+    "name": "fridgespace",
+    "short_name": "fridgespace",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",

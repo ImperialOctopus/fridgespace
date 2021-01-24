@@ -1,4 +1,4 @@
-package com.example.foodcoin
+package com.imperialoctopus.fridgespace
 
 import io.flutter.embedding.android.FlutterActivity
 

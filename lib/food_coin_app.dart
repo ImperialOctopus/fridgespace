@@ -13,9 +13,9 @@ import 'service/login/google_login_service.dart';
 import 'theme/theme.dart';
 
 /// Main app widget.
-class FoodCoinApp extends StatelessWidget {
+class FridgeSpaceApp extends StatelessWidget {
   /// Main app widget.
-  FoodCoinApp();
+  FridgeSpaceApp();
 
   final Future<FirebaseApp> _firebaseApp = Firebase.initializeApp();
 
