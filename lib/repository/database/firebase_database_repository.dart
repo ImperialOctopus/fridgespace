@@ -14,7 +14,31 @@ class FirebaseDatabaseRepository implements DatabaseRepository {
   final User user;
 
   /// Database implementation using firebase.
-  FirebaseDatabaseRepository({@required this.user});
+  FirebaseDatabaseRepository({@required this.user}) {
+    FirebaseFirestore.instance
+        .collection('users')
+        .doc(user.uid)
+        .get()
+        .then((userDoc) {
+      if (userDoc.exists) {
+        FirebaseFirestore.instance
+            .collection('users')
+            .doc(user.uid)
+            .set(<String, String>{
+          'imageUrl': user.photoURL,
+          'name': user.displayName
+        });
+      } else {
+        FirebaseFirestore.instance
+            .collection('users')
+            .doc(user.uid)
+            .update(<String, String>{
+          'imageUrl': user.photoURL,
+          'name': user.displayName
+        });
+      }
+    });
+  }
 
   @override
   Future<void> addFoodItem(FoodItem foodItem) async {
@@ -48,23 +72,7 @@ class FirebaseDatabaseRepository implements DatabaseRepository {
   }
 
   @override
-  Stream<Iterable<FoodItem>> get foodlistStream {
-    return FirebaseFirestore.instance
-        .collection('users')
-        .doc(user.uid)
-        .collection('fridge')
-        .snapshots()
-        .map<FoodItem>((doc) {
-      final fields = doc.data();
-      final date = fields['expires'] as Timestamp;
-
-      return FoodItem(
-          uuid: doc.id,
-          name: fields['name'].toString(),
-          quantity: fields['quantity'].toString(),
-          expires: date.toDate(),
-          shared: fields['shared'] as bool);
-    });
+  Stream<Iterable<FoodItem>> get foodlistStream async*{
   }
 
   @override
