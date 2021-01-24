@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 
 /// Model of an item of food.
 class FoodItem {
+  /// Unique identifier.
+  final String uuid;
+
   /// Name of food.
   final String name;
 
@@ -16,6 +19,7 @@ class FoodItem {
 
   /// Model of an item of food.
   const FoodItem({
+    @required this.uuid,
     @required this.name,
     @required this.quantity,
     @required this.expires,

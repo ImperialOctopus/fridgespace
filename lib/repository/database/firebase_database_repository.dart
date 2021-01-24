@@ -18,51 +18,33 @@ class FirebaseDatabaseRepository implements DatabaseRepository {
 
   @override
   Future<void> addFoodItem(FoodItem foodItem) async {
-    final userRecord = await FirebaseFirestore.instance
+    await FirebaseFirestore.instance
         .collection('users')
         .doc(user.uid)
-        .get();
-
-    if (userRecord.exists) {
-      await FirebaseFirestore.instance
-          .collection('users')
-          .doc(user.uid)
-          .update(<String, dynamic>{
-        'fridge': FieldValue.arrayUnion(<dynamic>[foodItem.toJson()])
-      });
-    } else {
-      await FirebaseFirestore.instance
-          .collection('users')
-          .doc(user.uid)
-          .set(<String, dynamic>{
-        'fridge': FieldValue.arrayUnion(<dynamic>[foodItem.toJson()])
-      });
-    }
+        .collection('fridge')
+        .doc(foodItem.uuid)
+        .set(foodItem.toJson());
   }
 
   @override
   Future<Iterable<FoodItem>> getFoodItems() async {
-    final userRecord = await FirebaseFirestore.instance
+    final fridge = await FirebaseFirestore.instance
         .collection('users')
         .doc(user.uid)
+        .collection('fridge')
         .get();
 
-    if (userRecord.exists) {
-      final docs = userRecord.get('fridge') as List<dynamic>;
+    return fridge.docs.map<FoodItem>((doc) {
+      final fields = doc.data();
+      final date = fields['expires'] as Timestamp;
 
-      return docs.map<FoodItem>((dynamic e) {
-        final fields = e as Map<String, dynamic>;
-        final date = fields['expires'] as Timestamp;
-
-        return FoodItem(
-            name: fields['name'].toString(),
-            quantity: fields['quantity'].toString(),
-            expires: date.toDate(),
-            shared: fields['shared'] as bool);
-      });
-    } else {
-      return [];
-    }
+      return FoodItem(
+          uuid: doc.id,
+          name: fields['name'].toString(),
+          quantity: fields['quantity'].toString(),
+          expires: date.toDate(),
+          shared: fields['shared'] as bool);
+    });
   }
 
   @override
@@ -70,24 +52,18 @@ class FirebaseDatabaseRepository implements DatabaseRepository {
     return FirebaseFirestore.instance
         .collection('users')
         .doc(user.uid)
+        .collection('fridge')
         .snapshots()
-        .map((userRecord) {
-      if (userRecord.exists) {
-        var docs = userRecord.get('fridge') as List<dynamic>;
+        .map<FoodItem>((doc) {
+      final fields = doc.data();
+      final date = fields['expires'] as Timestamp;
 
-        return docs.map<FoodItem>((dynamic e) {
-          var fields = e as Map<String, dynamic>;
-          var date = fields['expires'] as Timestamp;
-
-          return FoodItem(
-              name: fields['name'].toString(),
-              quantity: fields['quantity'].toString(),
-              expires: date.toDate(),
-              shared: fields['shared'] as bool);
-        });
-      } else {
-        return <FoodItem>[];
-      }
+      return FoodItem(
+          uuid: doc.id,
+          name: fields['name'].toString(),
+          quantity: fields['quantity'].toString(),
+          expires: date.toDate(),
+          shared: fields['shared'] as bool);
     });
   }
 
