@@ -14,7 +14,7 @@ abstract class DatabaseRepository {
   Stream<Iterable<FoodItem>> get foodlistStream;
 
   /// Creates a new bubble and returns its ID.
-  Future<String> addBubble(Bubble bubble);
+  Future<String> createBubble(String name);
 
   /// Adds a bubble to a user's bubbles, and the user to that bubble.
   Future<void> joinBubble(String bubble);

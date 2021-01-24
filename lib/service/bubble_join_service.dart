@@ -14,6 +14,10 @@ class BubbleJoinService {
   /// Join a bubble by code.
   Future<void> joinBubble(String code) => _databaseRepository.joinBubble(code);
 
+  /// Create bubble
+  Future<String> createBubble(String name) =>
+      _databaseRepository.createBubble(name);
+
   /// Leave a bubble.
   Future<void> leaveBubble(Bubble bubble) {
     // TODO: implement leave bubble

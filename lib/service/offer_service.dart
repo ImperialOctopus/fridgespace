@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 import '../model/food_item.dart';
@@ -9,8 +10,11 @@ class OfferService {
   /// Database repository.
   final DatabaseRepository databaseRepository;
 
+  /// Current user
+  final User user;
+
   /// Service to get offers from database.
-  const OfferService({@required this.databaseRepository});
+  const OfferService({@required this.databaseRepository, @required this.user});
 
   /// Get IDs of connected users.
   Future<Set<String>> getConnectedUsers() async {
@@ -24,7 +28,11 @@ class OfferService {
     }));
 
     // Expand IDs into a set.
-    return iterables.expand((element) => element).toSet();
+    final connections = iterables.expand((element) => element).toSet();
+
+    // Remove self
+    connections.remove(user.uid);
+    return connections;
   }
 
   /// Get all food shared by a user.
