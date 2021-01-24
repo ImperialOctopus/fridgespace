@@ -1,6 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:fridgespace/repository/database/firebase_database_repository.dart';
 
 import 'bloc/authentication/authentication_bloc.dart';
 import 'bloc/authentication/authentication_event.dart';
@@ -102,12 +103,20 @@ class _AppView extends StatelessWidget {
       builder: (context, state) {
         if (state is UserAuthenticated) {
           /// Provide the logged in food list.
-          return BlocProvider(
-            create: (context) => FoodlistBloc(
-              databaseRepository:
-                  RepositoryProvider.of<DatabaseRepository>(context),
-            )..add(const LoadFoodlist()),
-            child: HomeScreen(user: state.user),
+          return RepositoryProvider<DatabaseRepository>(
+            create: (context) => FirebaseDatabaseRepository(user: state.user),
+            child: BlocProvider(
+              create: (context) => FoodlistBloc(
+                databaseRepository:
+                    RepositoryProvider.of<DatabaseRepository>(context),
+              )..add(const LoadFoodlist()),
+              child: Navigator(
+                pages: [
+                  MaterialPage<void>(child: HomeScreen(user: state.user)),
+                ],
+                onPopPage: (route, dynamic result) => route.didPop(result),
+              ),
+            ),
           );
         } else {
           return const LoginScreen();

@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:fridgespace/bloc/foodlist/foodlist_bloc.dart';
+import 'package:fridgespace/bloc/foodlist/foodlist_event.dart';
 import 'package:intl/intl.dart';
 
 import '../../model/food_item.dart';
@@ -22,6 +25,7 @@ class _AddItemScreenState extends State<AddItemScreen> {
 
   TextEditingController _nameController;
   TextEditingController _quantityController;
+  DateTime _selectedDate;
 
   @override
   void initState() {
@@ -32,16 +36,15 @@ class _AddItemScreenState extends State<AddItemScreen> {
     _quantityController.text = widget.lookupResult?.quantity;
   }
 
-  DateTime _selectedDate;
-
   //Method for showing the date picker
   void _pickDateDialog() {
     showDatePicker(
-        context: context,
-        initialDate: DateTime.now(),
-        //which date will display when user open the picker
-        firstDate: DateTime(1950), //what will be the up to supported date in picker
-        lastDate: DateTime.now().add(const Duration(days: 3650)))
+            context: context,
+            initialDate: DateTime.now(),
+            //which date will display when user open the picker
+            firstDate: DateTime(
+                1950), //what will be the up to supported date in picker
+            lastDate: DateTime.now().add(const Duration(days: 3650)))
         .then((pickedDate) {
       //then usually do the future job
       if (pickedDate == null) {
@@ -72,58 +75,59 @@ class _AddItemScreenState extends State<AddItemScreen> {
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(10),
-          child: form(),
+          child: Form(
+            key: _formKey,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                TextFormField(
+                  controller: _nameController,
+                  decoration: const InputDecoration(
+                    labelText: 'Item Name',
+                  ),
+                  validator: (value) {
+                    if (value.isEmpty) {
+                      return 'Please enter some text';
+                    }
+                    return null;
+                  },
+                  style: const TextStyle(fontSize: 20),
+                ),
+                TextFormField(
+                  controller: _quantityController,
+                  keyboardType: TextInputType.number,
+                  inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                  decoration: const InputDecoration(
+                    labelText: 'Item Weight/Count',
+                  ),
+                  validator: (value) {
+                    if (value.isEmpty) {
+                      return 'Please enter a value';
+                    }
+                    return null;
+                  },
+                  style: const TextStyle(fontSize: 16),
+                ),
+                const SizedBox(height: 20),
+                Text(_selectedDate ==
+                        null //ternary expression to check if date is null
+                    ? 'No date chosen!'
+                    : 'Expiry Date: ${DateFormat.yMMMd().format(_selectedDate)}'),
+                RaisedButton(
+                  child: const Text('Add Date'),
+                  onPressed: _pickDateDialog,
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 10.0),
+                  child: ElevatedButton(
+                    onPressed: _submitForm,
+                    child: const Text('Submit'),
+                  ),
+                ),
+              ],
+            ),
+          ),
         ),
-      ),
-    );
-  }
-
-  Widget form() {
-    return Form(
-      key: _formKey,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          TextFormField(
-            controller: _nameController,
-            decoration: const InputDecoration(
-                border: InputBorder.none,
-                labelText: 'Item Name',
-            ),
-            validator: (value) {
-              if (value.isEmpty) {
-                return 'Please enter some text';
-              }
-              return null;
-            },
-          ),
-          TextFormField(
-            controller: _quantityController,
-            keyboardType: TextInputType.number,
-            inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-            decoration: const InputDecoration(
-                border: InputBorder.none, labelText: 'Item Weight/Count'),
-            validator: (value) {
-              if (value.isEmpty) {
-                return 'Please enter a value';
-              }
-              return null;
-            },
-          ),
-          const SizedBox(height: 20),
-          Text(_selectedDate == null //ternary expression to check if date is null
-              ? 'No date chosen!'
-              : 'Expiry Date: ${DateFormat.yMMMd().format(_selectedDate)}'),
-          RaisedButton(child: const Text('Add Date'), onPressed: _pickDateDialog),
-
-          Padding(
-            padding: const EdgeInsets.symmetric(vertical: 10.0),
-            child: ElevatedButton(
-              onPressed: _submitForm,
-              child: const Text('Submit'),
-            ),
-          ),
-        ],
       ),
     );
   }
@@ -137,10 +141,11 @@ class _AddItemScreenState extends State<AddItemScreen> {
         name: _nameController.text,
         quantity: _quantityController.text,
         expires: _selectedDate,
-        shared: null,
+        shared: false,
       );
 
-      print(item.toJson());
+      BlocProvider.of<FoodlistBloc>(context).add(AddFoodItem(foodItem: item));
+      Navigator.of(context).pop();
     }
   }
 }
