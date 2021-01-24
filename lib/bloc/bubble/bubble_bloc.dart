@@ -23,8 +23,9 @@ class BubbleBloc extends Bloc<BubbleEvent, BubbleState> {
       yield* _mapLoadToState(event);
     } else if (event is BubblesChanged) {
       yield* _mapChangedToState(event);
+    } else {
+      throw FallThroughError();
     }
-    throw FallThroughError();
   }
 
   Stream<BubbleState> _mapLoadToState(LoadBubbles event) async* {

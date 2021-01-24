@@ -27,8 +27,9 @@ class FoodlistBloc extends Bloc<FoodlistEvent, FoodlistState> {
       yield* _mapAddToState(event);
     } else if (event is FoodlistChanged) {
       yield* _mapChangedToState(event);
+    } else {
+      throw FallThroughError();
     }
-    throw FallThroughError();
   }
 
   Stream<FoodlistState> _mapLoadToState(LoadFoodlist event) async* {
