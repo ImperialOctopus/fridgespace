@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import '../../service/bubble_join_service.dart';
 import '../../bloc/bubble/bubble_bloc.dart';
 import '../../bloc/bubble/bubble_state.dart';
 import '../join_bubble/create_bubble_screen.dart';
