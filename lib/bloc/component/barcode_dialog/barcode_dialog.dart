@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../../../exception/barcode_lookup_exception.dart';
+
 /// Dialog to display while waiting for file to load.
 class BarcodeDialog extends StatefulWidget {
   /// Future we're waiting for.
@@ -25,17 +27,41 @@ class _BarcodeDialogState extends State<BarcodeDialog> {
         future: widget.future,
         builder: (context, snapshot) {
           if (snapshot.hasError) {
-            return Center(
-              child: Column(
+            return AlertDialog(
+              title: const Text('Item lookup failed.'),
+              content: Column(
+                mainAxisSize: MainAxisSize.min,
                 children: [
-                  const Text('Error!'),
-                  Text(snapshot.error.toString()),
+                  if (snapshot.error is BarcodeLookupException)
+                    Text((snapshot.error as BarcodeLookupException).message),
                 ],
               ),
+              actions: [
+                FlatButton(
+                  child: const Text('Cancel'),
+                  onPressed: () => Navigator.of(context).pop(false),
+                ),
+                FlatButton(
+                  child: const Text('Enter Manually'),
+                  onPressed: () => Navigator.of(context).pop(true),
+                ),
+              ],
             );
           }
-          return const Center(
-            child: CircularProgressIndicator(),
+          return AlertDialog(
+            content: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                const Padding(
+                  padding: EdgeInsets.all(10),
+                  child: CircularProgressIndicator(),
+                ),
+                const Padding(
+                  padding: EdgeInsets.all(10),
+                  child: Text('Looking up item...'),
+                ),
+              ],
+            ),
           );
         });
   }
