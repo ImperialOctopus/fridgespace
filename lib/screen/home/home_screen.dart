@@ -4,7 +4,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../repository/database/firebase_database_repository.dart';
 import '../../repository/database/database_repository.dart';
 import 'fridge_page.dart';
-import 'qr_page.dart';
 import 'search_page.dart';
 
 /// Screen containing main app pages.
@@ -41,7 +40,6 @@ class _HomeScreenState extends State<_HomeScreenPages> {
   );
 
   static const List<Widget> _pages = <Widget>[
-    QrPage(),
     FridgePage(),
     SearchPage(),
   ];
@@ -49,16 +47,12 @@ class _HomeScreenState extends State<_HomeScreenPages> {
   static const List<BottomNavigationBarItem> _bottomNavigationBarItems =
       <BottomNavigationBarItem>[
     BottomNavigationBarItem(
-      icon: Icon(Icons.bubble_chart),
-      label: 'QR',
-    ),
-    BottomNavigationBarItem(
       icon: Icon(Icons.business),
       label: 'Fridge',
     ),
     BottomNavigationBarItem(
-      icon: Icon(Icons.school),
-      label: 'Search',
+      icon: Icon(Icons.bubble_chart),
+      label: 'Bubble',
     ),
   ];
 
@@ -82,6 +76,12 @@ class _HomeScreenState extends State<_HomeScreenPages> {
         currentIndex: _pageIndex,
         items: _bottomNavigationBarItems,
         onTap: _onItemTapped,
+      ),
+      floatingActionButton: FloatingActionButton(
+        // TODO: barcode scanning
+        onPressed: () {},
+        tooltip: 'Pick Image',
+        child: const Icon(Icons.add_a_photo),
       ),
     );
   }

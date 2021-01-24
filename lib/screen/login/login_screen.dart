@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../bloc/authentication/authentication_bloc.dart';
 import '../../bloc/authentication/authentication_state.dart';
-import '../../service/login/google_login_service.dart';
+import '../../service/google_login_service.dart';
 import '../loading/loading_page.dart';
 
 /// Screen to show when app loads, before sign in.
