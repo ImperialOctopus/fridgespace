@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:firebase_ml_vision/firebase_ml_vision.dart';
+import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:openfoodfacts/openfoodfacts.dart';
 
@@ -20,7 +21,7 @@ class QrService {
       } else {
         return null;
       }
-    } catch (e) {
+    } on PlatformException {
       /// Exception occurred using camera so we try the gallery.
       final pickedFile =
           await ImagePicker().getImage(source: ImageSource.gallery);

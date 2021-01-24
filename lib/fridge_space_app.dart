@@ -10,6 +10,7 @@ import 'screen/home/home_screen.dart';
 import 'screen/loading/loading_screen.dart';
 import 'screen/login/login_screen.dart';
 import 'service/google_login_service.dart';
+import 'service/qr_service.dart';
 import 'theme/theme.dart';
 
 /// Main app widget.
@@ -61,6 +62,7 @@ class _ProviderComponentState extends State<_ProviderComponent> {
   AuthenticationBloc _authenticationBloc;
 
   GoogleLoginService _googleLoginService;
+  QrService _qrService;
 
   @override
   void initState() {
@@ -68,14 +70,21 @@ class _ProviderComponentState extends State<_ProviderComponent> {
 
     _authenticationBloc = AuthenticationBloc()
       ..add(const AuthenticationAppStarted());
+
     _googleLoginService = GoogleLoginService();
+    _qrService = QrService();
   }
 
   @override
   Widget build(BuildContext context) {
     return MultiRepositoryProvider(
       providers: [
-        RepositoryProvider<GoogleLoginService>.value(value: _googleLoginService)
+        RepositoryProvider<GoogleLoginService>.value(
+          value: _googleLoginService,
+        ),
+        RepositoryProvider<QrService>.value(
+          value: _qrService,
+        ),
       ],
       child: MultiBlocProvider(
         providers: [

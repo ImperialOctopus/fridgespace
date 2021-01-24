@@ -1,8 +1,16 @@
+import 'dart:io';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../../repository/database/firebase_database_repository.dart';
+
+import '../../bloc/component/barcode_dialog/barcode_dialog.dart';
+import '../../exception/barcode_lookup_exception.dart';
+import '../../model/product_lookup_result.dart';
 import '../../repository/database/database_repository.dart';
+import '../../repository/database/firebase_database_repository.dart';
+import '../../service/qr_service.dart';
+import '../add_item/add_item_screen.dart';
 import 'fridge_page.dart';
 import 'search_page.dart';
 
@@ -78,8 +86,7 @@ class _HomeScreenState extends State<_HomeScreenPages> {
         onTap: _onItemTapped,
       ),
       floatingActionButton: FloatingActionButton(
-        // TODO: barcode scanning
-        onPressed: () {},
+        onPressed: _onAddItemTapped,
         tooltip: 'Pick Image',
         child: const Icon(Icons.add_a_photo),
       ),
@@ -97,5 +104,58 @@ class _HomeScreenState extends State<_HomeScreenPages> {
       _pageController.animateToPage(index,
           duration: const Duration(milliseconds: 200), curve: Curves.easeInOut);
     });
+  }
+
+  void _onAddItemTapped() async {
+    final file =
+        await RepositoryProvider.of<QrService>(context).requestImageFile();
+
+    // User cancelled file input.
+    if (file == null) {
+      return;
+    }
+
+    // Show dialog while waiting for barcode processing.
+    final future = _processBarcodeFile(file);
+
+    final userResult = await showDialog<bool>(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          content: BarcodeDialog(future: future),
+        );
+      },
+    );
+
+    // User cancelled barcode checking, or no barcodes were found.
+    if (userResult != true) {
+      return;
+    }
+
+    // Push add item page.
+    return Navigator.of(context).push<void>(
+        MaterialPageRoute<void>(builder: (context) => AddItemScreen()));
+  }
+
+  Future<ProductLookupResult> _processBarcodeFile(File file) async {
+    final qrService = RepositoryProvider.of<QrService>(context);
+    final barcodesList = await qrService.readBarcodes(file);
+
+    if (barcodesList.isEmpty) {
+      throw const BarcodeLookupException('No barcodes found in image');
+    }
+
+    final foodItems =
+        (await Future.wait(barcodesList.map(qrService.lookupFoodItem)))
+            .where((element) => element != null);
+
+    if (foodItems.isEmpty) {
+      throw const BarcodeLookupException(
+          'Barcode could not be found in food database');
+    }
+
+    /// Return first of all valid items - probably not many cases where this will
+    /// discard useful information.
+    return foodItems.first;
   }
 }
