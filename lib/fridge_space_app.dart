@@ -2,7 +2,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:fridgespace/bloc/feed/feed_event.dart';
 
 import 'bloc/authentication/authentication_bloc.dart';
 import 'bloc/authentication/authentication_event.dart';
@@ -10,6 +9,7 @@ import 'bloc/authentication/authentication_state.dart';
 import 'bloc/bubble/bubble_bloc.dart';
 import 'bloc/bubble/bubble_event.dart';
 import 'bloc/feed/feed_bloc.dart';
+import 'bloc/feed/feed_event.dart';
 import 'bloc/foodlist/foodlist_bloc.dart';
 import 'bloc/foodlist/foodlist_event.dart';
 import 'repository/database/database_repository.dart';

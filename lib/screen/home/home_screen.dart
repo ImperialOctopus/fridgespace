@@ -80,7 +80,6 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Widget _buildFloatingActionButton(int pageIndex) {
-    print(pageIndex);
     // QR page
     if (pageIndex == 0 || pageIndex == 1) {
       return FloatingActionButton(
