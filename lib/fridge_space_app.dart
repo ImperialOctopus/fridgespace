@@ -10,7 +10,7 @@ import 'bloc/bubble/bubble_event.dart';
 import 'bloc/foodlist/foodlist_bloc.dart';
 import 'bloc/foodlist/foodlist_event.dart';
 import 'repository/database/database_repository.dart';
-import 'repository/database/firebase_database_repository.dart';
+import 'repository/database/mock_database_repository.dart';
 import 'screen/firebase_error_screen.dart';
 import 'screen/home/home_screen.dart';
 import 'screen/loading/loading_screen.dart';
@@ -106,7 +106,7 @@ class _AppView extends StatelessWidget {
         if (state is UserAuthenticated) {
           /// Provide the logged in food list.
           return RepositoryProvider<DatabaseRepository>(
-            create: (context) => FirebaseDatabaseRepository(user: state.user),
+            create: (context) => MockDatabaseRepository(),
             child: MultiBlocProvider(
               providers: [
                 BlocProvider(

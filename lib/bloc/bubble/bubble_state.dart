@@ -7,21 +7,24 @@ import '../../model/bubble.dart';
 abstract class BubbleState extends Equatable {
   /// State for bubble list bloc.
   const BubbleState();
-
-  @override
-  List<Object> get props => [];
 }
 
 /// Bubbles not loaded.
 class BubblesUnloaded extends BubbleState {
   /// Bubbles not loaded.
   const BubblesUnloaded();
+
+  @override
+  List<Object> get props => [];
 }
 
 /// Bubbles being loaded.
 class BubblesLoading extends BubbleState {
   /// Bubbles being loaded.
   const BubblesLoading();
+
+  @override
+  List<Object> get props => [];
 }
 
 /// Bubble list loaded.
@@ -31,6 +34,9 @@ class BubblesLoaded extends BubbleState {
 
   /// Bubble list loaded.
   const BubblesLoaded({@required this.bubbles});
+
+  @override
+  List<Object> get props => [bubbles];
 }
 
 /// Error occurred fetching bubble list.

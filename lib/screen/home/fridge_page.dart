@@ -18,7 +18,10 @@ class FridgePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<FoodlistBloc, FoodlistState>(
       builder: (context, state) {
+        print(state);
+
         if (state is FoodlistLoaded) {
+          print(state.foodlist.length);
           return ListView(
               children: state.foodlist
                   .map<Widget>(

@@ -11,8 +11,9 @@ import '../../repository/database/database_repository.dart';
 import '../../repository/database/firebase_database_repository.dart';
 import '../../service/qr_service.dart';
 import '../add_item/add_item_screen.dart';
-import 'fridge_page.dart';
+import '../join_bubble/join_bubble_screen.dart';
 import 'bubbles_page.dart';
+import 'fridge_page.dart';
 
 /// Screen containing main app pages.
 class HomeScreen extends StatelessWidget {
@@ -87,11 +88,18 @@ class _HomeScreenState extends State<_HomeScreenPages> {
         items: _bottomNavigationBarItems,
         onTap: _onItemTapped,
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _onAddItemTapped,
-        tooltip: 'Pick Image',
-        child: const Icon(Icons.add_a_photo),
-      ),
+      floatingActionButton: [
+        FloatingActionButton(
+          onPressed: _onAddFoodPressed,
+          tooltip: 'Pick Image',
+          child: const Icon(Icons.add_a_photo),
+        ),
+        FloatingActionButton(
+          onPressed: _onJoinBubblePressed,
+          tooltip: 'Join Bubble',
+          child: const Icon(Icons.add),
+        ),
+      ].elementAt(_pageIndex),
     );
   }
 
@@ -108,7 +116,7 @@ class _HomeScreenState extends State<_HomeScreenPages> {
     });
   }
 
-  void _onAddItemTapped() async {
+  void _onAddFoodPressed() async {
     final file =
         await RepositoryProvider.of<QrService>(context).requestImageFile();
 
@@ -143,7 +151,14 @@ class _HomeScreenState extends State<_HomeScreenPages> {
     return Navigator.of(context).push<void>(
       MaterialPageRoute<void>(
         builder: (context) => AddItemScreen(lookupResult: lookup),
-        fullscreenDialog: true,
+      ),
+    );
+  }
+
+  void _onJoinBubblePressed() {
+    Navigator.of(context).push<void>(
+      MaterialPageRoute<void>(
+        builder: (context) => const JoinBubbleScreen(),
       ),
     );
   }

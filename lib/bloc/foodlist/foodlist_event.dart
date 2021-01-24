@@ -7,15 +7,15 @@ import '../../model/food_item.dart';
 abstract class FoodlistEvent extends Equatable {
   /// Event for foodlist bloc.
   const FoodlistEvent();
-
-  @override
-  List<Object> get props => [];
 }
 
 /// Load food list.
 class LoadFoodlist extends FoodlistEvent {
   /// Load food list.
   const LoadFoodlist();
+
+  @override
+  List<Object> get props => [];
 }
 
 /// Add a food item to list.

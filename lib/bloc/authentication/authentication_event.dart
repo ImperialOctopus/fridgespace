@@ -6,15 +6,15 @@ import 'package:flutter/material.dart';
 abstract class AuthenticationEvent extends Equatable {
   /// Events for sign in bloc.
   const AuthenticationEvent();
-
-  @override
-  List<Object> get props => [];
 }
 
 /// App started.
 class AuthenticationAppStarted extends AuthenticationEvent {
   /// App started.
   const AuthenticationAppStarted();
+
+  @override
+  List<Object> get props => [];
 }
 
 /// User changed.
