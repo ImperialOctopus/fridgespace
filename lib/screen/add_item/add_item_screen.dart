@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:fridgespace/bloc/foodlist/foodlist_bloc.dart';
-import 'package:fridgespace/bloc/foodlist/foodlist_event.dart';
 import 'package:intl/intl.dart';
 
+import '../../bloc/foodlist/foodlist_bloc.dart';
+import '../../bloc/foodlist/foodlist_event.dart';
 import '../../model/food_item.dart';
 import '../../model/product_lookup_result.dart';
 
