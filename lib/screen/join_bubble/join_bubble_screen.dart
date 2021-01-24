@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:fridgespace/bloc/bubble/bubble_bloc.dart';
-import 'package:fridgespace/bloc/bubble/bubble_event.dart';
 
+import '../../bloc/bubble/bubble_bloc.dart';
+import '../../bloc/bubble/bubble_event.dart';
 import '../../exception/join_bubble_exception.dart';
 import '../../extension/uppercase_text_formatter.dart';
 import '../../service/bubble_join_service.dart';

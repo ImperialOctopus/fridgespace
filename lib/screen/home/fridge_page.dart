@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:fridgespace/bloc/foodlist/foodlist_event.dart';
 import 'package:intl/intl.dart';
 
 import '../../bloc/foodlist/foodlist_bloc.dart';
+import '../../bloc/foodlist/foodlist_event.dart';
 import '../../bloc/foodlist/foodlist_state.dart';
 
 /// Page to list items in the user's fridge.
