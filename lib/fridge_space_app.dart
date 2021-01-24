@@ -9,6 +9,7 @@ import 'bloc/authentication/authentication_state.dart';
 import 'bloc/bubble/bubble_bloc.dart';
 import 'bloc/bubble/bubble_event.dart';
 import 'bloc/feed/feed_bloc.dart';
+import 'bloc/feed/feed_event.dart';
 import 'bloc/foodlist/foodlist_bloc.dart';
 import 'bloc/foodlist/foodlist_event.dart';
 import 'repository/database/database_repository.dart';
@@ -142,7 +143,7 @@ class _AppViewState extends State<_AppView> {
       ..add(const LoadFoodlist());
     _bubbleBloc = BubbleBloc(databaseRepository: _databaseRepository)
       ..add(const LoadBubbles());
-    _feedBloc = FeedBloc(offerService: _offerService);
+    _feedBloc = FeedBloc(offerService: _offerService)..add(const LoadFeed());
   }
 
   @override

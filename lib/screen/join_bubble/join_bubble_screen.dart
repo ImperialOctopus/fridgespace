@@ -19,6 +19,7 @@ class _JoinBubbleScreenState extends State<JoinBubbleScreen> {
   final _textController = TextEditingController();
 
   bool loading = false;
+  bool submitEnabled = false;
 
   @override
   Widget build(BuildContext context) {
@@ -49,39 +50,47 @@ class _JoinBubbleScreenState extends State<JoinBubbleScreen> {
                       FilteringTextInputFormatter.allow(RegExp('[a-zA-Z]')),
                       UpperCaseTextFormatter(),
                     ],
+                    onChanged: (value) =>
+                        setState(() => submitEnabled = value.length == 5),
                     maxLength: 5,
                     style: Theme.of(context).textTheme.headline4,
                   ),
                   ElevatedButton(
                       child: const Text('Join!'),
-                      onPressed: () async {
-                        final future =
-                            RepositoryProvider.of<BubbleJoinService>(context)
-                                .joinBubble(_textController.text);
-                        setState(() {
-                          loading = true;
-                        });
-                        try {
-                          await future;
+                      onPressed: submitEnabled
+                          ? () async {
+                              final future =
+                                  RepositoryProvider.of<BubbleJoinService>(
+                                          context)
+                                      .joinBubble(_textController.text);
+                              setState(() {
+                                loading = true;
+                              });
+                              try {
+                                await future;
 
-                          /// Pop success message.
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(
-                                content:
-                                    Text('Successfully joined a new bubble!')),
-                          );
-                          Navigator.of(context).pop();
-                        } on JoinBubbleException catch (e) {
-                          loading = false;
+                                /// Pop success message.
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(
+                                      content: Text(
+                                          'Successfully joined a new bubble!')),
+                                );
+                                Navigator.of(context).pop();
+                              } on JoinBubbleException catch (e) {
+                                setState(() {
+                                  loading = false;
+                                });
 
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(
-                              content: Text('Failed to join bubble!\nError: ' +
-                                  e.message),
-                            ),
-                          );
-                        }
-                      })
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
+                                    content: Text(
+                                        'Failed to join bubble!\nError: ' +
+                                            e.message),
+                                  ),
+                                );
+                              }
+                            }
+                          : null)
                 ],
               ),
             ),
