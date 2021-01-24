@@ -30,8 +30,14 @@ class BubbleBloc extends Bloc<BubbleEvent, BubbleState> {
 
   Stream<BubbleState> _mapLoadToState(LoadBubbles event) async* {
     yield const BubblesLoading();
-    //final bubbles = await _databaseRepository.getBubbles();
-    //yield BubblesLoaded(bubbles: bubbles);
+    try {
+      final bubbleIds = await _databaseRepository.getBubbleIds();
+      final bubbles = await Future.wait(
+          bubbleIds.map((id) => _databaseRepository.getBubble(id)));
+      yield BubblesLoaded(bubbles: bubbles);
+    } catch (e) {
+      yield BubbleError(e.toString());
+    }
   }
 
   Stream<BubbleState> _mapChangedToState(BubblesChanged event) async* {

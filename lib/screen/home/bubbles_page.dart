@@ -40,6 +40,12 @@ class BubblesPage extends StatelessWidget {
                 const Divider(),
           ),
         );
+      } else if (state is BubbleError) {
+        return const Scaffold(
+          body: Center(
+            child: Text('Error fetching your bubbles.'),
+          ),
+        );
       } else {
         return const Scaffold(
           body: Center(
