@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -9,10 +11,15 @@ import 'feed_state.dart';
 class FeedBloc extends Bloc<FeedEvent, FeedState> {
   final OfferService _offerService;
 
+  // ignore: unused_field
+  Timer _timer;
+
   /// Bloc to handle Offers for feed.
   FeedBloc({@required OfferService offerService})
       : _offerService = offerService,
-        super(const FeedUnloaded());
+        super(const FeedUnloaded()) {
+    _timer = Timer.periodic(const Duration(seconds: 5), (_) => refresh());
+  }
 
   @override
   Stream<FeedState> mapEventToState(FeedEvent event) async* {
