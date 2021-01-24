@@ -5,6 +5,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'bloc/authentication/authentication_bloc.dart';
 import 'bloc/authentication/authentication_event.dart';
 import 'bloc/authentication/authentication_state.dart';
+import 'bloc/bubble/bubble_bloc.dart';
+import 'bloc/bubble/bubble_event.dart';
 import 'bloc/foodlist/foodlist_bloc.dart';
 import 'bloc/foodlist/foodlist_event.dart';
 import 'repository/database/database_repository.dart';
@@ -105,11 +107,21 @@ class _AppView extends StatelessWidget {
           /// Provide the logged in food list.
           return RepositoryProvider<DatabaseRepository>(
             create: (context) => FirebaseDatabaseRepository(user: state.user),
-            child: BlocProvider(
-              create: (context) => FoodlistBloc(
-                databaseRepository:
-                    RepositoryProvider.of<DatabaseRepository>(context),
-              )..add(const LoadFoodlist()),
+            child: MultiBlocProvider(
+              providers: [
+                BlocProvider(
+                    create: (context) => FoodlistBloc(
+                          databaseRepository:
+                              RepositoryProvider.of<DatabaseRepository>(
+                                  context),
+                        )..add(const LoadFoodlist())),
+                BlocProvider(
+                  create: (context) => BubbleBloc(
+                    databaseRepository:
+                        RepositoryProvider.of<DatabaseRepository>(context),
+                  )..add(const LoadBubbles()),
+                ),
+              ],
               child: Navigator(
                 pages: [
                   MaterialPage<void>(child: HomeScreen(user: state.user)),
