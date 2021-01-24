@@ -13,8 +13,8 @@ class FoodlistBloc extends Bloc<FoodlistEvent, FoodlistState> {
   FoodlistBloc({@required DatabaseRepository databaseRepository})
       : _databaseRepository = databaseRepository,
         super(FoodlistUnloaded()) {
-    _databaseRepository.foodListStream
-        .listen((foodList) => add(FoodlistChanged(foodlist: foodList)));
+    _databaseRepository.foodlistStream
+        .listen((foodlist) => add(FoodlistChanged(foodlist: foodlist)));
   }
 
   @override
