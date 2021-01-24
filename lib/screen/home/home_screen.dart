@@ -55,7 +55,7 @@ class _HomeScreenState extends State<_HomeScreenPages> {
   static const List<BottomNavigationBarItem> _bottomNavigationBarItems =
       <BottomNavigationBarItem>[
     BottomNavigationBarItem(
-      icon: Icon(Icons.business),
+      icon: Icon(Icons.kitchen),
       label: 'Fridge',
     ),
     BottomNavigationBarItem(
