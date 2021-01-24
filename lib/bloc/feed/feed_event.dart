@@ -16,9 +16,9 @@ class LoadFeed extends FeedEvent {
 }
 
 /// Reload list.
-class ReloadBubbles extends FeedEvent {
+class ReloadFeed extends FeedEvent {
   /// Reload list.
-  const ReloadBubbles();
+  const ReloadFeed();
 
   @override
   List<Object> get props => [];

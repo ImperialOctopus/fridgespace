@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:fridgespace/bloc/feed/feed_event.dart';
 
 import 'bloc/authentication/authentication_bloc.dart';
 import 'bloc/authentication/authentication_event.dart';
@@ -142,7 +143,7 @@ class _AppViewState extends State<_AppView> {
       ..add(const LoadFoodlist());
     _bubbleBloc = BubbleBloc(databaseRepository: _databaseRepository)
       ..add(const LoadBubbles());
-    _feedBloc = FeedBloc(offerService: _offerService);
+    _feedBloc = FeedBloc(offerService: _offerService)..add(const LoadFeed());
   }
 
   @override
