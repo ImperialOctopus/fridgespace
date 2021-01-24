@@ -13,7 +13,7 @@ abstract class DatabaseRepository {
   /// Stream of food lists.
   Stream<Iterable<FoodItem>> get foodlistStream;
 
-  /// Creates a new bubble and returns its ID.
+  /// Creates a new bubble, joins it and returns its ID.
   Future<String> createBubble(String name);
 
   /// Adds a bubble to a user's bubbles, and the user to that bubble.

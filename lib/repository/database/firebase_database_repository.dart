@@ -96,7 +96,7 @@ class FirebaseDatabaseRepository implements DatabaseRepository {
     await FirebaseFirestore.instance
         .collection('bubbles')
         .doc(id)
-        .set(Bubble(id: id, name: name, memberIds: []).toJson());
+        .set(Bubble(id: id, name: name, memberIds: [user.uid]).toJson());
 
     return id;
   }
