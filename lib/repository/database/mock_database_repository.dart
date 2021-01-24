@@ -29,12 +29,14 @@ class MockDatabaseRepository implements DatabaseRepository {
     });
     _foodStreamController.add([
       FoodItem(
+        uuid: '0000000000000',
         name: 'Food the first',
         quantity: '2',
         expires: DateTime.now(),
         shared: false,
       ),
       FoodItem(
+        uuid: '0000000000001',
         name: 'Food the second',
         quantity: '1',
         expires: DateTime.now(),

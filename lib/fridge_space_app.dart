@@ -1,4 +1,3 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -12,7 +11,6 @@ import 'bloc/foodlist/foodlist_bloc.dart';
 import 'bloc/foodlist/foodlist_event.dart';
 import 'repository/database/database_repository.dart';
 import 'repository/database/firebase_database_repository.dart';
-import 'repository/database/mock_database_repository.dart';
 import 'screen/firebase_error_screen.dart';
 import 'screen/home/home_screen.dart';
 import 'screen/loading/loading_screen.dart';
