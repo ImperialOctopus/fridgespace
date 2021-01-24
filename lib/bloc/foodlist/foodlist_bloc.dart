@@ -51,5 +51,8 @@ class FoodlistBloc extends Bloc<FoodlistEvent, FoodlistState> {
     yield FoodlistLoaded(foodlist: event.foodlist);
   }
 
-  Stream<FoodlistState> _mapToggleToShared(ToggleFoodShared event) async* {}
+  Stream<FoodlistState> _mapToggleToShared(ToggleFoodShared event) async* {
+    await _databaseRepository.setFoodSharing(
+        event.foodItem.uuid, !event.foodItem.shared);
+  }
 }
