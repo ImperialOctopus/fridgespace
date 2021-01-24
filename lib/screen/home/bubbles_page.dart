@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:fridgespace/service/bubble_join_service.dart';
 import '../../bloc/bubble/bubble_bloc.dart';
 import '../../bloc/bubble/bubble_state.dart';
+import '../join_bubble/create_bubble_screen.dart';
 
 /// Page to display user's bubbles.
 class BubblesPage extends StatelessWidget {
@@ -23,7 +23,7 @@ class BubblesPage extends StatelessWidget {
               itemBuilder: (BuildContext context, int index) {
                 if (index < list.length) {
                   return Container(
-                    height: 50,
+                    height: 150,
                     child: Card(
                         child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -55,7 +55,9 @@ class BubblesPage extends StatelessWidget {
         } else {
           return Column(children: <Widget>[
             const Text("You aren't part of any bubbles yet"),
-            const FlatButton(onPressed: null, child: Text('Create Bubble'))
+            TextButton(
+                onPressed: () => _openCreateBubblesPage(context),
+                child: const Text('Create Bubble'))
           ]);
         }
       } else if (state is BubbleError) {
@@ -70,5 +72,10 @@ class BubblesPage extends StatelessWidget {
         );
       }
     });
+  }
+
+  void _openCreateBubblesPage(BuildContext context) {
+    Navigator.of(context).push<void>(MaterialPageRoute<void>(
+        builder: (context) => const CreateBubbleScreen()));
   }
 }
