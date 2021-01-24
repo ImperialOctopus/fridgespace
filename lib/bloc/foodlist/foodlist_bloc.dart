@@ -14,7 +14,6 @@ class FoodlistBloc extends Bloc<FoodlistEvent, FoodlistState> {
       : _databaseRepository = databaseRepository,
         super(FoodlistUnloaded()) {
     _databaseRepository.foodlistStream.listen((foodlist) {
-      print(foodlist);
       add(FoodlistChanged(foodlist: foodlist));
     });
   }
@@ -47,6 +46,7 @@ class FoodlistBloc extends Bloc<FoodlistEvent, FoodlistState> {
   }
 
   Stream<FoodlistState> _mapChangedToState(FoodlistChanged event) async* {
+    print(event.foodlist);
     yield FoodlistLoaded(foodlist: event.foodlist);
   }
 }

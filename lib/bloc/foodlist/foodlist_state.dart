@@ -7,18 +7,21 @@ import '../../model/food_item.dart';
 abstract class FoodlistState extends Equatable {
   /// List of foods in user's fridge.
   const FoodlistState();
-
-  @override
-  List<Object> get props => [];
 }
 
 /// Default state.
-class FoodlistUnloaded extends FoodlistState {}
+class FoodlistUnloaded extends FoodlistState {
+  @override
+  List<Object> get props => [];
+}
 
 /// Food list is loading.
 class FoodlistLoading extends FoodlistState {
   /// Food list is loading.
   const FoodlistLoading();
+
+  @override
+  List<Object> get props => [];
 }
 
 /// Food list loaded.
@@ -28,6 +31,9 @@ class FoodlistLoaded extends FoodlistState {
 
   /// Food list loaded.
   const FoodlistLoaded({@required this.foodlist});
+
+  @override
+  List<Object> get props => [foodlist];
 }
 
 /// Error occurred fetching food list.

@@ -7,15 +7,15 @@ import '../../model/bubble.dart';
 abstract class BubbleEvent extends Equatable {
   /// Event for bubble list bloc.
   const BubbleEvent();
-
-  @override
-  List<Object> get props => [];
 }
 
 /// Load bubble list.
 class LoadBubbles extends BubbleEvent {
   /// Load bubble list.
   const LoadBubbles();
+
+  @override
+  List<Object> get props => [];
 }
 
 /// Food list was changed by the server.

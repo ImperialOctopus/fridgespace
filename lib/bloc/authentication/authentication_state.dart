@@ -6,15 +6,15 @@ import 'package:flutter/material.dart';
 abstract class AuthenticationState extends Equatable {
   /// Sign in bloc uninitialised.
   const AuthenticationState();
-
-  @override
-  List<Object> get props => [];
 }
 
 /// Sign in bloc uninitialised.
 class AuthenticationUninitialised extends AuthenticationState {
   /// Sign in bloc uninitialised.
   const AuthenticationUninitialised();
+
+  @override
+  List<Object> get props => [];
 }
 
 /// Signed in.
@@ -33,4 +33,7 @@ class UserAuthenticated extends AuthenticationState {
 class UserNotAuthenticated extends AuthenticationState {
   /// Signed out.
   const UserNotAuthenticated();
+
+  @override
+  List<Object> get props => [];
 }
