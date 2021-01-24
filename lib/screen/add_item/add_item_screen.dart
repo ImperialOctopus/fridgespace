@@ -95,10 +95,8 @@ class _AddItemScreenState extends State<AddItemScreen> {
                 ),
                 TextFormField(
                   controller: _quantityController,
-                  keyboardType: TextInputType.number,
-                  inputFormatters: [FilteringTextInputFormatter.digitsOnly],
                   decoration: const InputDecoration(
-                    labelText: 'Item Weight/Count',
+                    labelText: 'Quantity',
                   ),
                   validator: (value) {
                     if (value.isEmpty) {

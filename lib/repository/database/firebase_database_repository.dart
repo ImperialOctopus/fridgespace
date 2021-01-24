@@ -18,12 +18,26 @@ class FirebaseDatabaseRepository implements DatabaseRepository {
 
   @override
   Future<void> addFoodItem(FoodItem foodItem) async {
-    await FirebaseFirestore.instance
+    final userRecord = await FirebaseFirestore.instance
         .collection('users')
         .doc(user.uid)
-        .set(<String, dynamic>{
-      'fridge': FieldValue.arrayUnion(<dynamic>[foodItem.toJson()])
-    });
+        .get();
+
+    if (userRecord.exists) {
+      await FirebaseFirestore.instance
+          .collection('users')
+          .doc(user.uid)
+          .update(<String, dynamic>{
+        'fridge': FieldValue.arrayUnion(<dynamic>[foodItem.toJson()])
+      });
+    } else {
+      await FirebaseFirestore.instance
+          .collection('users')
+          .doc(user.uid)
+          .set(<String, dynamic>{
+        'fridge': FieldValue.arrayUnion(<dynamic>[foodItem.toJson()])
+      });
+    }
   }
 
   @override
