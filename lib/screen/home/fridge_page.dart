@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:fridgespace/bloc/foodlist/foodlist_event.dart';
 import 'package:intl/intl.dart';
 
 import '../../bloc/foodlist/foodlist_bloc.dart';
@@ -39,7 +40,9 @@ class FridgePage extends StatelessWidget {
                             Icons.share,
                             color: x.shared ? Colors.pink : Colors.grey,
                           ),
-                          onPressed: () {},
+                          onPressed: () =>
+                              BlocProvider.of<FoodlistBloc>(context)
+                                  .add(ToggleFoodShared(foodItem: x)),
                         ),
                         contentPadding: const EdgeInsets.symmetric(
                             vertical: 10, horizontal: 20),
