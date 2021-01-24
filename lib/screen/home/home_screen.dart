@@ -73,12 +73,14 @@ class _HomeScreenState extends State<_HomeScreenPages> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: PageView(
-        controller: _pageController,
-        onPageChanged: (index) {
-          _onPageChanged(index);
-        },
-        children: _pages,
+      body: SafeArea(
+        child: PageView(
+          controller: _pageController,
+          onPageChanged: (index) {
+            _onPageChanged(index);
+          },
+          children: _pages,
+        ),
       ),
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _pageIndex,
