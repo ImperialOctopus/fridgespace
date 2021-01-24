@@ -9,7 +9,7 @@ import 'screen/firebase_error_screen.dart';
 import 'screen/home/home_screen.dart';
 import 'screen/loading/loading_screen.dart';
 import 'screen/login/login_screen.dart';
-import 'service/login/google_login_service.dart';
+import 'service/google_login_service.dart';
 import 'theme/theme.dart';
 
 /// Main app widget.
