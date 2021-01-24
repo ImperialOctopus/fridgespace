@@ -14,7 +14,7 @@ abstract class DatabaseRepository {
   Stream<Iterable<FoodItem>> get foodlistStream;
 
   /// Set sharing for a single food item.
-  Future<void> setFoodSharing(String foodId, bool sharing);
+  Future<void> setFoodSharing(FoodItem foodItem, bool sharing);
 
   /// Creates a new bubble, joins it and returns its ID.
   Future<String> createBubble(String name);
