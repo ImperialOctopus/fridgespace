@@ -32,3 +32,15 @@ class BubblesLoaded extends BubbleState {
   /// Bubble list loaded.
   const BubblesLoaded({@required this.bubbles});
 }
+
+/// Error occurred fetching bubble list.
+class BubbleError extends BubbleState {
+  /// Error message to display.
+  final String message;
+
+  /// Error occurred fetching bubble list.
+  const BubbleError([this.message = '']);
+
+  @override
+  List<Object> get props => [message];
+}
