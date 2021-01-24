@@ -103,4 +103,10 @@ class MockDatabaseRepository implements DatabaseRepository {
     // TODO: implement getUserProfile
     throw UnimplementedError();
   }
+
+  @override
+  Future<void> leaveBubble(String id) {
+    // TODO: implement leaveBubble
+    throw UnimplementedError();
+  }
 }

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-import '../model/bubble.dart';
 import '../repository/database/database_repository.dart';
 
 /// Service to join or leave bubbles.
@@ -19,8 +18,6 @@ class BubbleJoinService {
       _databaseRepository.createBubble(name);
 
   /// Leave a bubble.
-  Future<void> leaveBubble(Bubble bubble) {
-    // TODO: implement leave bubble
-    throw UnimplementedError();
-  }
+  Future<void> leaveBubble(String name) =>
+      _databaseRepository.leaveBubble(name);
 }

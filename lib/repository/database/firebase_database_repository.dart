@@ -179,6 +179,46 @@ class FirebaseDatabaseRepository implements DatabaseRepository {
   }
 
   @override
+  Future<void> leaveBubble(String id) async {
+    final bubble =
+        await FirebaseFirestore.instance.collection('bubbles').doc(id).get();
+
+    if (!bubble.exists) {
+      throw const JoinBubbleException('Bubble did not exist');
+    }
+
+    // Remove user from bubble
+    await FirebaseFirestore.instance
+        .collection('bubbles')
+        .doc(id)
+        .update(<String, dynamic>{
+      'memberIds': FieldValue.arrayRemove(<dynamic>[user.uid])
+    });
+
+    final userRecord = await FirebaseFirestore.instance
+        .collection('users')
+        .doc(user.uid)
+        .get();
+
+    // Remove bubble from user
+    if (userRecord.exists) {
+      await FirebaseFirestore.instance
+          .collection('users')
+          .doc(user.uid)
+          .update(<String, dynamic>{
+        'bubbles': FieldValue.arrayRemove(<dynamic>[id])
+      });
+    } else {
+      await FirebaseFirestore.instance
+          .collection('users')
+          .doc(user.uid)
+          .set(<String, dynamic>{
+        'bubbles': FieldValue.arrayRemove(<dynamic>[id])
+      });
+    }
+  }
+
+  @override
   Stream<Iterable<Bubble>> get bubbleStream {
     return FirebaseFirestore.instance
         .collection('users')
