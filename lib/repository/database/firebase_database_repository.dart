@@ -28,10 +28,28 @@ class FirebaseDatabaseRepository implements DatabaseRepository {
 
   @override
   Future<Iterable<FoodItem>> getFoodItems() async {
-    return (await FirebaseFirestore.instance
+    final userRecord = await FirebaseFirestore.instance
         .collection('users')
         .doc(user.uid)
-        .get())['fridge'] as List<FoodItem>;
+        .get();
+
+    if (userRecord.exists) {
+      var docs = userRecord.get('fridge') as List<dynamic>;
+
+      return docs.map<FoodItem>((dynamic e) {
+        var fields = e as Map<String, dynamic>;
+        var date = fields['expires'] as Timestamp;
+
+        return FoodItem(
+            name: fields['name'].toString(),
+            quantity: fields['quantity'].toString(),
+            expires: date.toDate(),
+            shared: fields['shared'] as bool);
+      });
+    } else {
+      print('Does not exist for user: ' + user.uid);
+      return [];
+    }
   }
 
   @override
