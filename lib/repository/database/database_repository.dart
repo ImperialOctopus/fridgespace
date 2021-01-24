@@ -10,7 +10,7 @@ abstract class DatabaseRepository {
   Future<Iterable<FoodItem>> getFoodItems();
 
   /// Stream of food lists.
-  Stream<Iterable<FoodItem>> get foodListStream;
+  Stream<Iterable<FoodItem>> get foodlistStream;
 
   /// Creates a new bubble and returns its ID.
   Future<String> addBubble(Bubble bubble);

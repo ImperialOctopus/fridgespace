@@ -53,7 +53,7 @@ class FirebaseDatabaseRepository implements DatabaseRepository {
   }
 
   @override
-  Stream<Iterable<FoodItem>> get foodListStream {
+  Stream<Iterable<FoodItem>> get foodlistStream {
     return FirebaseFirestore.instance
         .collection('users')
         .doc(user.uid)
