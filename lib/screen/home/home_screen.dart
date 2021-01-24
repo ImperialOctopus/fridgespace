@@ -1,46 +1,28 @@
 import 'dart:io';
 
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../bloc/component/barcode_dialog/barcode_dialog.dart';
 import '../../exception/barcode_lookup_exception.dart';
 import '../../model/product_lookup_result.dart';
-import '../../repository/database/database_repository.dart';
-import '../../repository/database/firebase_database_repository.dart';
 import '../../service/qr_service.dart';
 import '../add_item/add_item_screen.dart';
 import '../join_bubble/join_bubble_screen.dart';
 import 'bubbles_page.dart';
+import 'feed_page.dart';
 import 'fridge_page.dart';
 
 /// Screen containing main app pages.
-class HomeScreen extends StatelessWidget {
-  /// Logged in user object.
-  final User user;
+class HomeScreen extends StatefulWidget {
+  /// Screen containing main app pages.
+  const HomeScreen();
 
   @override
-  Widget build(BuildContext context) {
-    return RepositoryProvider<DatabaseRepository>(
-      create: (context) => FirebaseDatabaseRepository(user: user),
-      child: const _HomeScreenPages(),
-    );
-  }
-
-  /// Screen containing main app pages.
-  const HomeScreen({@required this.user});
+  State<HomeScreen> createState() => _HomeScreenState();
 }
 
-class _HomeScreenPages extends StatefulWidget {
-  /// Screen containing main app pages.
-  const _HomeScreenPages();
-
-  @override
-  _HomeScreenState createState() => _HomeScreenState();
-}
-
-class _HomeScreenState extends State<_HomeScreenPages> {
+class _HomeScreenState extends State<HomeScreen> {
   int _pageIndex;
 
   final PageController _pageController = PageController(
@@ -50,6 +32,7 @@ class _HomeScreenState extends State<_HomeScreenPages> {
 
   static const List<Widget> _pages = <Widget>[
     FridgePage(),
+    FeedPage(),
     BubblesPage(),
   ];
 
@@ -58,6 +41,10 @@ class _HomeScreenState extends State<_HomeScreenPages> {
     BottomNavigationBarItem(
       icon: Icon(Icons.kitchen),
       label: 'Fridge',
+    ),
+    BottomNavigationBarItem(
+      icon: Icon(Icons.star),
+      label: 'Feed',
     ),
     BottomNavigationBarItem(
       icon: Icon(Icons.bubble_chart),
@@ -88,19 +75,28 @@ class _HomeScreenState extends State<_HomeScreenPages> {
         items: _bottomNavigationBarItems,
         onTap: _onItemTapped,
       ),
-      floatingActionButton: [
-        FloatingActionButton(
-          onPressed: _onAddFoodPressed,
-          tooltip: 'Pick Image',
-          child: const Icon(Icons.add_a_photo),
-        ),
-        FloatingActionButton(
-          onPressed: _onJoinBubblePressed,
-          tooltip: 'Join Bubble',
-          child: const Icon(Icons.add),
-        ),
-      ].elementAt(_pageIndex),
+      floatingActionButton: _buildFloatingActionButton(_pageIndex),
     );
+  }
+
+  Widget _buildFloatingActionButton(int pageIndex) {
+    // QR page
+    if (pageIndex == 0 || pageIndex == 1) {
+      return FloatingActionButton(
+        onPressed: _onAddFoodPressed,
+        tooltip: 'Pick Image',
+        child: const Icon(Icons.add_a_photo),
+      );
+    }
+    // Bubbles
+    if (pageIndex == 2) {
+      FloatingActionButton(
+        onPressed: _onJoinBubblePressed,
+        tooltip: 'Join Bubble',
+        child: const Icon(Icons.add),
+      );
+    }
+    throw FallThroughError();
   }
 
   void _onPageChanged(int index) {

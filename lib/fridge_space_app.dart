@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -7,6 +8,7 @@ import 'bloc/authentication/authentication_event.dart';
 import 'bloc/authentication/authentication_state.dart';
 import 'bloc/bubble/bubble_bloc.dart';
 import 'bloc/bubble/bubble_event.dart';
+import 'bloc/feed/feed_bloc.dart';
 import 'bloc/foodlist/foodlist_bloc.dart';
 import 'bloc/foodlist/foodlist_event.dart';
 import 'repository/database/database_repository.dart';
@@ -15,7 +17,9 @@ import 'screen/firebase_error_screen.dart';
 import 'screen/home/home_screen.dart';
 import 'screen/loading/loading_screen.dart';
 import 'screen/login/login_screen.dart';
+import 'service/bubble_join_service.dart';
 import 'service/google_login_service.dart';
+import 'service/offer_service.dart';
 import 'service/qr_service.dart';
 import 'theme/theme.dart';
 
@@ -42,7 +46,7 @@ class FridgeSpaceApp extends StatelessWidget {
 
           // Loading complete
           if (snapshot.connectionState == ConnectionState.done) {
-            return const _ProviderComponent();
+            return const _PreAuthComponent();
           }
 
           // Future hasn't completed
@@ -54,15 +58,15 @@ class FridgeSpaceApp extends StatelessWidget {
 }
 
 /// Main app view.
-class _ProviderComponent extends StatefulWidget {
+class _PreAuthComponent extends StatefulWidget {
   /// Const constructor.
-  const _ProviderComponent();
+  const _PreAuthComponent();
 
   @override
-  _ProviderComponentState createState() => _ProviderComponentState();
+  _PreAuthComponentState createState() => _PreAuthComponentState();
 }
 
-class _ProviderComponentState extends State<_ProviderComponent> {
+class _PreAuthComponentState extends State<_PreAuthComponent> {
   AuthenticationBloc _authenticationBloc;
 
   GoogleLoginService _googleLoginService;
@@ -92,49 +96,89 @@ class _ProviderComponentState extends State<_ProviderComponent> {
       ],
       child: BlocProvider<AuthenticationBloc>.value(
         value: _authenticationBloc,
-        child: _AppView(),
+        child: BlocBuilder<AuthenticationBloc, AuthenticationState>(
+            builder: (context, state) {
+          if (state is UserAuthenticated) {
+            return _AppView(user: state.user);
+          } else {
+            return const LoginScreen();
+          }
+        }),
       ),
     );
   }
 }
 
-class _AppView extends StatelessWidget {
+class _AppView extends StatefulWidget {
+  final User user;
+
+  const _AppView({@required this.user});
+
+  @override
+  _AppViewState createState() => _AppViewState();
+}
+
+class _AppViewState extends State<_AppView> {
+  DatabaseRepository _databaseRepository;
+
+  BubbleJoinService _bubbleJoinService;
+  OfferService _offerService;
+
+  FoodlistBloc _foodlistBloc;
+  BubbleBloc _bubbleBloc;
+  FeedBloc _feedBloc;
+
+  @override
+  void initState() {
+    super.initState();
+
+    _databaseRepository = FirebaseDatabaseRepository(user: widget.user);
+
+    _bubbleJoinService =
+        BubbleJoinService(databaseRepository: _databaseRepository);
+    _offerService = OfferService(databaseRepository: _databaseRepository);
+
+    _foodlistBloc = FoodlistBloc(databaseRepository: _databaseRepository)
+      ..add(const LoadFoodlist());
+    _bubbleBloc = BubbleBloc(databaseRepository: _databaseRepository)
+      ..add(const LoadBubbles());
+    _feedBloc = FeedBloc(offerService: _offerService);
+  }
+
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<AuthenticationBloc, AuthenticationState>(
-      builder: (context, state) {
-        if (state is UserAuthenticated) {
-          /// Provide the logged in food list.
-          return RepositoryProvider<DatabaseRepository>(
-            //create: (context) => MockDatabaseRepository(),
-            create: (context) => FirebaseDatabaseRepository(user: state.user),
-            child: MultiBlocProvider(
-              providers: [
-                BlocProvider(
-                    create: (context) => FoodlistBloc(
-                          databaseRepository:
-                              RepositoryProvider.of<DatabaseRepository>(
-                                  context),
-                        )..add(const LoadFoodlist())),
-                BlocProvider(
-                  create: (context) => BubbleBloc(
-                    databaseRepository:
-                        RepositoryProvider.of<DatabaseRepository>(context),
-                  )..add(const LoadBubbles()),
-                ),
-              ],
-              child: Navigator(
-                pages: [
-                  MaterialPage<void>(child: HomeScreen(user: state.user)),
-                ],
-                onPopPage: (route, dynamic result) => route.didPop(result),
-              ),
-            ),
-          );
-        } else {
-          return const LoginScreen();
-        }
-      },
+    /// Provide the logged in food list.
+    return MultiRepositoryProvider(
+      providers: [
+        RepositoryProvider<DatabaseRepository>.value(
+          value: _databaseRepository,
+        ),
+        RepositoryProvider<BubbleJoinService>.value(
+          value: _bubbleJoinService,
+        ),
+        RepositoryProvider<OfferService>.value(
+          value: _offerService,
+        ),
+      ],
+      child: MultiBlocProvider(
+        providers: [
+          BlocProvider<FoodlistBloc>.value(
+            value: _foodlistBloc,
+          ),
+          BlocProvider<BubbleBloc>.value(
+            value: _bubbleBloc,
+          ),
+          BlocProvider<FeedBloc>.value(
+            value: _feedBloc,
+          ),
+        ],
+        child: Navigator(
+          pages: [
+            const MaterialPage<void>(child: HomeScreen()),
+          ],
+          onPopPage: (route, dynamic result) => route.didPop(result),
+        ),
+      ),
     );
   }
 }
