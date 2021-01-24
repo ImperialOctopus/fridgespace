@@ -12,7 +12,7 @@ import '../../repository/database/firebase_database_repository.dart';
 import '../../service/qr_service.dart';
 import '../add_item/add_item_screen.dart';
 import 'fridge_page.dart';
-import 'search_page.dart';
+import 'bubbles_page.dart';
 
 /// Screen containing main app pages.
 class HomeScreen extends StatelessWidget {
@@ -49,7 +49,7 @@ class _HomeScreenState extends State<_HomeScreenPages> {
 
   static const List<Widget> _pages = <Widget>[
     FridgePage(),
-    SearchPage(),
+    BubblesPage(),
   ];
 
   static const List<BottomNavigationBarItem> _bottomNavigationBarItems =
