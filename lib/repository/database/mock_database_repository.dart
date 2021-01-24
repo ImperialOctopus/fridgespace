@@ -1,5 +1,7 @@
 import 'dart:async';
 
+import 'package:fridgespace/model/user_profile.dart';
+
 import '../../model/bubble.dart';
 import '../../model/food_item.dart';
 import 'database_repository.dart';
@@ -89,5 +91,17 @@ class MockDatabaseRepository implements DatabaseRepository {
         (bubble) => Bubble(
             name: bubble.name, memberIds: [...bubble.memberIds, _memberId]));
     _bubbleStreamController.add(_bubbles.values);
+  }
+
+  @override
+  Future<Iterable<FoodItem>> getFoodItemsFromUser(String id) {
+    // TODO: implement getFoodItemsFromUser
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<UserProfile> getUserProfile(String id) {
+    // TODO: implement getUserProfile
+    throw UnimplementedError();
   }
 }

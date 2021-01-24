@@ -1,3 +1,5 @@
+import 'package:fridgespace/model/user_profile.dart';
+
 import '../../model/food_item.dart';
 import '../../model/bubble.dart';
 
@@ -29,4 +31,7 @@ abstract class DatabaseRepository {
 
   /// Gets all food items owned by a user.
   Future<Iterable<FoodItem>> getFoodItemsFromUser(String id);
+
+  /// Get a user's profile by id
+  Future<UserProfile> getUserProfile(String id);
 }

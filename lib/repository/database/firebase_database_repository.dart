@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:fridgespace/model/user_profile.dart';
 import '../../model/bubble.dart';
 import '../../model/food_item.dart';
 
@@ -194,6 +195,17 @@ class FirebaseDatabaseRepository implements DatabaseRepository {
           expires: date.toDate(),
           shared: fields['shared'] as bool);
     });
+  }
+
+  @override
+  Future<UserProfile> getUserProfile(String id) async {
+    var user =
+        await FirebaseFirestore.instance.collection('users').doc(id).get();
+
+    return UserProfile(
+      displayName: user.get('name').toString(),
+      pictureUrl: user.get('imageUrl').toString(),
+    );
   }
 
   String _getRandomString(int length) {

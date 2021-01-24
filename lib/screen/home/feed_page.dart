@@ -23,7 +23,7 @@ class FeedPage extends StatelessWidget {
                   .map<Widget>(
                     (Offer x) => ListTile(
                       leading: Image.network(
-                        x.profileImage,
+                        x.offerer.pictureUrl,
                         width: 50,
                       ),
                       title: Text(x.foodItem.name),
