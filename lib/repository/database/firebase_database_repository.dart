@@ -21,7 +21,7 @@ class FirebaseDatabaseRepository implements DatabaseRepository {
     await FirebaseFirestore.instance
         .collection('users')
         .doc(user.uid)
-        .update(<String, dynamic>{
+        .set(<String, dynamic>{
       'fridge': FieldValue.arrayUnion(<dynamic>[foodItem.toJson()])
     });
   }
@@ -85,7 +85,6 @@ class FirebaseDatabaseRepository implements DatabaseRepository {
 
     do {
       id = _getRandomString(5);
-      print('id: ' + id);
       docRef = FirebaseFirestore.instance.collection('bubbles').doc(id);
       doc = await docRef.get();
     } while (doc.exists);
