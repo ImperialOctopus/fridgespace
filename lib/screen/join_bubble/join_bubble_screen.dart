@@ -33,6 +33,7 @@ class _JoinBubbleScreenState extends State<JoinBubbleScreen> {
           ? const Center(child: CircularProgressIndicator())
           : Center(
               child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   const Text('Join a Bubble'),
                   TextField(
