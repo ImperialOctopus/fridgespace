@@ -16,9 +16,13 @@ class MockDatabaseRepository implements DatabaseRepository {
 
   final Map<String, Bubble> _bubbles = const {
     '111111': Bubble(
-        memberIds: [_memberId, 'asdaa', 'jjfdhjsahg'], name: 'BubbleOne'),
+        id: "AAAAA",
+        memberIds: [_memberId, 'asdaa', 'jjfdhjsahg'],
+        name: 'BubbleOne'),
     '346653753': Bubble(
-        memberIds: [_memberId, 'rhahjrt', '101215'], name: 'Second Bubble')
+        id: "AAAAA",
+        memberIds: [_memberId, 'rhahjrt', '101215'],
+        name: 'Second Bubble')
   };
 
   final _bubbleStreamController = StreamController<Iterable<Bubble>>();
@@ -63,7 +67,7 @@ class MockDatabaseRepository implements DatabaseRepository {
   @override
   Future<String> createBubble(String name) async {
     final id = DateTime.now().millisecondsSinceEpoch.toString();
-    _bubbles[id] = Bubble(name: name, memberIds: []);
+    _bubbles[id] = Bubble(id: id, name: name, memberIds: []);
     _bubbleStreamController.add(_bubbles.values);
     return id;
   }
@@ -88,7 +92,9 @@ class MockDatabaseRepository implements DatabaseRepository {
     _bubbles.update(
         id,
         (bubble) => Bubble(
-            name: bubble.name, memberIds: [...bubble.memberIds, _memberId]));
+            id: "AAAAA",
+            name: bubble.name,
+            memberIds: [...bubble.memberIds, _memberId]));
     _bubbleStreamController.add(_bubbles.values);
   }
 

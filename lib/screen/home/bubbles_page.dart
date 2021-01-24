@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:fridgespace/service/bubble_join_service.dart';
 import '../../bloc/bubble/bubble_bloc.dart';
 import '../../bloc/bubble/bubble_state.dart';
 
@@ -16,8 +17,7 @@ class BubblesPage extends StatelessWidget {
 
         if (list.isNotEmpty) {
           return Scaffold(
-            body:
-            ListView.separated(
+            body: ListView.separated(
               padding: const EdgeInsets.all(8),
               itemCount: list.length + 1,
               itemBuilder: (BuildContext context, int index) {
@@ -28,28 +28,24 @@ class BubblesPage extends StatelessWidget {
                         child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: <Widget>[
-                              Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 10.0),
-                                  child:
-                                  Text('Bubble: ${list
-                                      .elementAt(index)
-                                      .name}')),
-                              const Padding(
-                                  padding: EdgeInsets.symmetric(
-                                      horizontal: 10.0, vertical: 4.0),
-                                  child:
-                                  RaisedButton(
-                                      onPressed: null,
-                                      child: Text('Leave Bubble')
-                                  )
-                              )
-                            ]
-                        )
-                    ),
+                          Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 10.0),
+                              child: Text(
+                                  'Bubble: ${list.elementAt(index).name}')),
+                          Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 10.0, vertical: 4.0),
+                              child: RaisedButton(
+                                  onPressed: () => RepositoryProvider.of<
+                                          BubbleJoinService>(context)
+                                      .leaveBubble(list.elementAt(index).id),
+                                  child: const Text('Leave Bubble')))
+                        ])),
                   );
                 } else {
-                  return const FlatButton(onPressed: null, child: Text('Create Bubble'));
+                  return const FlatButton(
+                      onPressed: null, child: Text('Create Bubble'));
                 }
               },
               separatorBuilder: (BuildContext context, int index) =>
@@ -57,12 +53,10 @@ class BubblesPage extends StatelessWidget {
             ),
           );
         } else {
-          return Column(
-            children: <Widget>[
-              const Text("You aren't part of any bubbles yet"),
-              const FlatButton(onPressed: null, child: Text('Create Bubble'))
-            ]
-          );
+          return Column(children: <Widget>[
+            const Text("You aren't part of any bubbles yet"),
+            const FlatButton(onPressed: null, child: Text('Create Bubble'))
+          ]);
         }
       } else if (state is BubbleError) {
         return const Center(
