@@ -73,12 +73,14 @@ class _HomeScreenState extends State<_HomeScreenPages> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: PageView(
-        controller: _pageController,
-        onPageChanged: (index) {
-          _onPageChanged(index);
-        },
-        children: _pages,
+      body: SafeArea(
+        child: PageView(
+          controller: _pageController,
+          onPageChanged: (index) {
+            _onPageChanged(index);
+          },
+          children: _pages,
+        ),
       ),
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _pageIndex,
@@ -121,9 +123,7 @@ class _HomeScreenState extends State<_HomeScreenPages> {
     final userResult = await showDialog<bool>(
       context: context,
       builder: (BuildContext context) {
-        return AlertDialog(
-          content: BarcodeDialog(future: future),
-        );
+        return BarcodeDialog(future: future);
       },
     );
 
@@ -132,9 +132,16 @@ class _HomeScreenState extends State<_HomeScreenPages> {
       return;
     }
 
+    ProductLookupResult lookup;
+    try {
+      lookup = await future;
+    } catch (e) {
+      lookup = null;
+    }
+
     // Push add item page.
-    return Navigator.of(context).push<void>(
-        MaterialPageRoute<void>(builder: (context) => AddItemScreen()));
+    return Navigator.of(context).push<void>(MaterialPageRoute<void>(
+        builder: (context) => AddItemScreen(lookupResult: lookup)));
   }
 
   Future<ProductLookupResult> _processBarcodeFile(File file) async {

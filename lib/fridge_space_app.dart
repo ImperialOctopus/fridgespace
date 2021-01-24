@@ -25,25 +25,23 @@ class FridgeSpaceApp extends StatelessWidget {
     return MaterialApp(
       title: 'Fridge Space',
       theme: themeData,
-      home: SafeArea(
-        child: FutureBuilder(
-          // Initialize firebase
-          future: _firebaseApp,
-          builder: (context, snapshot) {
-            // Check for errors
-            if (snapshot.hasError) {
-              return const FirebaseErrorScreen();
-            }
+      home: FutureBuilder(
+        // Initialize firebase
+        future: _firebaseApp,
+        builder: (context, snapshot) {
+          // Check for errors
+          if (snapshot.hasError) {
+            return const FirebaseErrorScreen();
+          }
 
-            // Loading complete
-            if (snapshot.connectionState == ConnectionState.done) {
-              return const _ProviderComponent();
-            }
+          // Loading complete
+          if (snapshot.connectionState == ConnectionState.done) {
+            return const _ProviderComponent();
+          }
 
-            // Future hasn't completed
-            return const LoadingScreen();
-          },
-        ),
+          // Future hasn't completed
+          return const LoadingScreen();
+        },
       ),
     );
   }

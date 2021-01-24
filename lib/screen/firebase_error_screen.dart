@@ -8,8 +8,10 @@ class FirebaseErrorScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const Scaffold(
-      body: Center(
-        child: Text('An error has occurred.'),
+      body: SafeArea(
+        child: Center(
+          child: Text('An error has occurred.'),
+        ),
       ),
     );
   }
