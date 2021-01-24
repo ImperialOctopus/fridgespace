@@ -29,20 +29,20 @@ class BubblesPage extends StatelessWidget {
                         child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: <Widget>[
-                              Padding(
-                                  padding:
+                          Padding(
+                              padding:
                                   const EdgeInsets.symmetric(horizontal: 10.0),
-                                  child: Text(
-                                      'Bubble: ${list.elementAt(index).name} \n Code: ${list.elementAt(index).id}')),
-                              Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 10.0, vertical: 4.0),
-                                  child: RaisedButton(
-                                      onPressed: () => RepositoryProvider.of<
+                              child: Text(
+                                  'Bubble: ${list.elementAt(index).name} \n Code: ${list.elementAt(index).id}')),
+                          Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 10.0, vertical: 4.0),
+                              child: RaisedButton(
+                                  onPressed: () => RepositoryProvider.of<
                                           BubbleJoinService>(context)
-                                          .leaveBubble(list.elementAt(index).id),
-                                      child: const Text('Leave Bubble')))
-                            ])),
+                                      .leaveBubble(list.elementAt(index).id),
+                                  child: const Text('Leave Bubble')))
+                        ])),
                   );
                 } else {
                   return TextButton(
@@ -51,16 +51,18 @@ class BubblesPage extends StatelessWidget {
                 }
               },
               separatorBuilder: (BuildContext context, int index) =>
-              const Divider(),
+                  const Divider(),
             ),
           );
         } else {
-          return Column(children: <Widget>[
-            const Text("You aren't part of any bubbles yet"),
-            TextButton(
-                onPressed: () => _openCreateBubblesPage(context),
-                child: const Text('Create Bubble'))
-          ]);
+          return Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                const Text("You aren't part of any bubbles yet."),
+                TextButton(
+                    onPressed: () => _openCreateBubblesPage(context),
+                    child: const Text('Create Bubble'))
+              ]);
         }
       } else if (state is BubbleError) {
         return const Center(
