@@ -82,12 +82,16 @@ class _HomeScreenState extends State<HomeScreen> {
 
   Widget _buildFloatingActionButton(int pageIndex) {
     // QR page
-    if (pageIndex == 0 || pageIndex == 1) {
+    if (pageIndex == 0) {
       return FloatingActionButton(
         onPressed: _onAddFoodPressed,
         tooltip: 'Pick Image',
         child: const Icon(Icons.add_a_photo),
       );
+    }
+    // Feed
+    if (pageIndex == 1) {
+      return null;
     }
     // Bubbles
     if (pageIndex == 2) {
