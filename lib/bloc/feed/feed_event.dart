@@ -1,4 +1,7 @@
 import 'package:equatable/equatable.dart';
+import 'package:flutter/material.dart';
+
+import '../../model/offer.dart';
 
 /// Event for feed list bloc.
 abstract class FeedEvent extends Equatable {
@@ -16,10 +19,13 @@ class LoadFeed extends FeedEvent {
 }
 
 /// Reload list.
-class ReloadFeed extends FeedEvent {
+class FeedReloaded extends FeedEvent {
+  /// New offers.
+  final Iterable<Offer> newOffers;
+
   /// Reload list.
-  const ReloadFeed();
+  const FeedReloaded({@required this.newOffers});
 
   @override
-  List<Object> get props => [];
+  List<Object> get props => [newOffers];
 }
