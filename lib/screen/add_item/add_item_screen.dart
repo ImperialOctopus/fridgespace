@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:intl/intl.dart';
 
 import '../../model/food_item.dart';
 import '../../model/product_lookup_result.dart';
@@ -27,6 +28,29 @@ class _AddItemScreenState extends State<AddItemScreen> {
     super.initState();
     _nameController = TextEditingController();
     _quantityController = TextEditingController();
+  }
+
+  DateTime _selectedDate;
+
+  //Method for showing the date picker
+  void _pickDateDialog() {
+    showDatePicker(
+        context: context,
+        initialDate: DateTime.now(),
+        //which date will display when user open the picker
+        firstDate: DateTime(1950), //what will be the up to supported date in picker
+        lastDate: DateTime.now().add(const Duration(days: 3650)))
+        .then((pickedDate) {
+      //then usually do the future job
+      if (pickedDate == null) {
+        //if user tap cancel then this function will stop
+        return;
+      }
+      setState(() {
+        //for rebuilding the ui
+        _selectedDate = pickedDate;
+      });
+    });
   }
 
   @override
@@ -82,16 +106,12 @@ class _AddItemScreenState extends State<AddItemScreen> {
               return null;
             },
           ),
-          TextFormField(
-            decoration: const InputDecoration(
-                border: InputBorder.none, labelText: 'Expiry Date'),
-            validator: (value) {
-              if (value.isEmpty) {
-                return 'Please enter a value';
-              }
-              return null;
-            },
-          ),
+          const SizedBox(height: 20),
+          Text(_selectedDate == null //ternary expression to check if date is null
+              ? 'No date chosen!'
+              : 'Expiry Date: ${DateFormat.yMMMd().format(_selectedDate)}'),
+          RaisedButton(child: const Text('Add Date'), onPressed: _pickDateDialog),
+
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 10.0),
             child: ElevatedButton(
@@ -112,7 +132,7 @@ class _AddItemScreenState extends State<AddItemScreen> {
       final item = FoodItem(
         name: _nameController.text,
         quantity: _quantityController.text,
-        expires: null,
+        expires: _selectedDate,
         shared: null,
       );
 
