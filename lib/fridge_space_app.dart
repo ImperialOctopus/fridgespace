@@ -1,6 +1,10 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:fridgespace/bloc/foodlist/foodlist_bloc.dart';
+import 'package:fridgespace/bloc/foodlist/foodlist_event.dart';
+import 'package:fridgespace/bloc/foodlist/foodlist_state.dart';
+import 'package:fridgespace/repository/database/database_repository.dart';
 
 import 'bloc/authentication/authentication_bloc.dart';
 import 'bloc/authentication/authentication_event.dart';
@@ -84,10 +88,8 @@ class _ProviderComponentState extends State<_ProviderComponent> {
           value: _qrService,
         ),
       ],
-      child: MultiBlocProvider(
-        providers: [
-          BlocProvider<AuthenticationBloc>.value(value: _authenticationBloc)
-        ],
+      child: BlocProvider<AuthenticationBloc>.value(
+        value: _authenticationBloc,
         child: _AppView(),
       ),
     );
@@ -100,7 +102,14 @@ class _AppView extends StatelessWidget {
     return BlocBuilder<AuthenticationBloc, AuthenticationState>(
       builder: (context, state) {
         if (state is UserAuthenticated) {
-          return HomeScreen(user: state.user);
+          /// Provide the logged in food list.
+          return BlocProvider(
+            create: (context) => FoodlistBloc(
+              databaseRepository:
+                  RepositoryProvider.of<DatabaseRepository>(context),
+            )..add(const LoadFoodlist()),
+            child: HomeScreen(user: state.user),
+          );
         } else {
           return const LoginScreen();
         }

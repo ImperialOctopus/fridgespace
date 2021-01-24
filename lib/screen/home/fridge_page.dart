@@ -10,6 +10,13 @@ class FridgePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // RepositoryProvider.of<DatabaseRepository>(context).addFoodItem(FoodItem(
+    //   name: "Cheese",
+    //   quantity: "",
+    //   expires: DateTime(2020),
+    //   shared: false,
+    // ));
+
     return FutureBuilder<Iterable<FoodItem>>(
       future: RepositoryProvider.of<DatabaseRepository>(context).getFoodItems(),
       builder: (context, snapshot) {
@@ -26,6 +33,9 @@ class FridgePage extends StatelessWidget {
                     ),
                   )
                   .toList());
+        } else if (snapshot.hasError) {
+          print('Error: ' + snapshot.error.toString());
+          return Center(child: Text('Error: ' + snapshot.error.toString()));
         } else {
           return const Center(child: CircularProgressIndicator());
         }
