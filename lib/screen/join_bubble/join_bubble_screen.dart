@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:fridgespace/bloc/bubble/bubble_bloc.dart';
+import 'package:fridgespace/bloc/bubble/bubble_event.dart';
 
 import '../../exception/join_bubble_exception.dart';
 import '../../extension/uppercase_text_formatter.dart';
@@ -75,6 +77,8 @@ class _JoinBubbleScreenState extends State<JoinBubbleScreen> {
                                       content: Text(
                                           'Successfully joined a new bubble!')),
                                 );
+                                BlocProvider.of<BubbleBloc>(context)
+                                    .add(const LoadBubbles());
                                 Navigator.of(context).pop();
                               } on JoinBubbleException catch (e) {
                                 setState(() {
