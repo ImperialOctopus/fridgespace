@@ -137,7 +137,8 @@ class _AppViewState extends State<_AppView> {
 
     _bubbleJoinService =
         BubbleJoinService(databaseRepository: _databaseRepository);
-    _offerService = OfferService(databaseRepository: _databaseRepository);
+    _offerService = OfferService(
+        databaseRepository: _databaseRepository, user: widget.user);
 
     _foodlistBloc = FoodlistBloc(databaseRepository: _databaseRepository)
       ..add(const LoadFoodlist());
