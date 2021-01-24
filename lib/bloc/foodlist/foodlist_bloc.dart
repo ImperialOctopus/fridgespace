@@ -26,6 +26,8 @@ class FoodlistBloc extends Bloc<FoodlistEvent, FoodlistState> {
       yield* _mapAddToState(event);
     } else if (event is FoodlistChanged) {
       yield* _mapChangedToState(event);
+    } else if (event is ToggleFoodShared) {
+      yield* _mapToggleToShared(event);
     } else {
       throw FallThroughError();
     }
@@ -46,7 +48,8 @@ class FoodlistBloc extends Bloc<FoodlistEvent, FoodlistState> {
   }
 
   Stream<FoodlistState> _mapChangedToState(FoodlistChanged event) async* {
-    print(event.foodlist);
     yield FoodlistLoaded(foodlist: event.foodlist);
   }
+
+  Stream<FoodlistState> _mapToggleToShared(ToggleFoodShared event) async* {}
 }
