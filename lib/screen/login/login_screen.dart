@@ -18,11 +18,19 @@ class LoginScreen extends StatelessWidget {
         builder: (context, state) {
           if (state is UserNotAuthenticated) {
             return Center(
-              child: RaisedButton(
-                onPressed: RepositoryProvider.of<GoogleLoginService>(context)
-                    .openLogin,
-                child: const Text('Log In'),
-              ),
+              child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text('FridgeSpace',
+                        style: Theme.of(context).textTheme.headline3),
+                    Container(height: 30),
+                    RaisedButton(
+                      onPressed:
+                          RepositoryProvider.of<GoogleLoginService>(context)
+                              .openLogin,
+                      child: const Text('Log In'),
+                    ),
+                  ]),
             );
           }
           return const LoadingPage();
