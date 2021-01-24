@@ -18,6 +18,9 @@ class FeedBloc extends Bloc<FeedEvent, FeedState> {
   Stream<FeedState> mapEventToState(FeedEvent event) async* {
     if (event is LoadFeed) {
       yield* _mapLoadToState(event);
+    }
+    if (event is FeedReloaded) {
+      yield FeedLoaded(offers: event.newOffers);
     } else {
       throw FallThroughError();
     }
@@ -27,5 +30,11 @@ class FeedBloc extends Bloc<FeedEvent, FeedState> {
     yield const FeedLoading();
     final offers = await _offerService.getAllOffersFromConnectedUsers();
     yield FeedLoaded(offers: offers);
+  }
+
+  /// Refresh the feed.
+  Future<void> refresh() async {
+    final offers = await _offerService.getAllOffersFromConnectedUsers();
+    add(FeedReloaded(newOffers: offers));
   }
 }

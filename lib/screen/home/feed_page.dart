@@ -14,38 +14,39 @@ class FeedPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<FeedBloc, FeedState>(
       builder: (context, state) {
-        print(state);
-
         if (state is FeedLoaded) {
-          print(state.offers.length);
-          return ListView(
-              children: state.offers
-                  .map<Widget>(
-                    (Offer x) => ListTile(
-                      leading: Image.network(
-                        x.offerer.pictureUrl,
-                        width: 50,
-                      ),
-                      title: Text(x.foodItem.name),
-                      subtitle: Text('Qty: ' +
-                          (x.foodItem.quantity ?? 'unknown') +
-                          '\nExpires: ' +
-                          (x.foodItem.expires != null
-                              ? DateFormat('dd/MM/yy')
-                                  .format(x.foodItem.expires)
-                              : 'unknown')),
-                      trailing: IconButton(
-                        icon: const Icon(
-                          Icons.favorite,
-                          color: Colors.pink,
+          return RefreshIndicator(
+              onRefresh: BlocProvider.of<FeedBloc>(context).refresh,
+              child: ListView(
+                physics: const AlwaysScrollableScrollPhysics(),
+                children: state.offers
+                    .map<Widget>(
+                      (Offer x) => ListTile(
+                        leading: Image.network(
+                          x.offerer.pictureUrl,
+                          width: 50,
                         ),
-                        onPressed: () {},
+                        title: Text(x.foodItem.name),
+                        subtitle: Text('Qty: ' +
+                            (x.foodItem.quantity ?? 'unknown') +
+                            '\nExpires: ' +
+                            (x.foodItem.expires != null
+                                ? DateFormat('dd/MM/yy')
+                                    .format(x.foodItem.expires)
+                                : 'unknown')),
+                        trailing: IconButton(
+                          icon: const Icon(
+                            Icons.favorite,
+                            color: Colors.pink,
+                          ),
+                          onPressed: () {},
+                        ),
+                        contentPadding: const EdgeInsets.symmetric(
+                            vertical: 10, horizontal: 20),
                       ),
-                      contentPadding: const EdgeInsets.symmetric(
-                          vertical: 10, horizontal: 20),
-                    ),
-                  )
-                  .toList());
+                    )
+                    .toList(),
+              ));
         } else if (state is FeedError) {
           return Center(child: Text('Error: ' + state.message));
         } else {
