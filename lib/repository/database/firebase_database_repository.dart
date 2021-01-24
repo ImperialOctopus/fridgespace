@@ -53,23 +53,7 @@ class FirebaseDatabaseRepository implements DatabaseRepository {
 
   @override
   Future<Iterable<FoodItem>> getFoodItems() async {
-    final fridge = await FirebaseFirestore.instance
-        .collection('users')
-        .doc(user.uid)
-        .collection('fridge')
-        .get();
-
-    return fridge.docs.map<FoodItem>((doc) {
-      final fields = doc.data();
-      final date = fields['expires'] as Timestamp;
-
-      return FoodItem(
-          uuid: doc.id,
-          name: fields['name'].toString(),
-          quantity: fields['quantity'].toString(),
-          expires: date.toDate(),
-          shared: fields['shared'] as bool);
-    });
+    return getFoodItemsFromUser(user.uid);
   }
 
   @override
@@ -188,6 +172,27 @@ class FirebaseDatabaseRepository implements DatabaseRepository {
       } else {
         return <Bubble>[];
       }
+    });
+  }
+
+  @override
+  Future<Iterable<FoodItem>> getFoodItemsFromUser(String id) async {
+    final fridge = await FirebaseFirestore.instance
+        .collection('users')
+        .doc(id)
+        .collection('fridge')
+        .get();
+
+    return fridge.docs.map<FoodItem>((doc) {
+      final fields = doc.data();
+      final date = fields['expires'] as Timestamp;
+
+      return FoodItem(
+          uuid: doc.id,
+          name: fields['name'].toString(),
+          quantity: fields['quantity'].toString(),
+          expires: date.toDate(),
+          shared: fields['shared'] as bool);
     });
   }
 
