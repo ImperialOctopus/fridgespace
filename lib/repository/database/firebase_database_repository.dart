@@ -53,6 +53,33 @@ class FirebaseDatabaseRepository implements DatabaseRepository {
   }
 
   @override
+  Stream<Iterable<FoodItem>> get foodListStream {
+    return FirebaseFirestore.instance
+        .collection('users')
+        .doc(user.uid)
+        .snapshots()
+        .map((userRecord) {
+      if (userRecord.exists) {
+        var docs = userRecord.get('fridge') as List<dynamic>;
+
+        return docs.map<FoodItem>((dynamic e) {
+          var fields = e as Map<String, dynamic>;
+          var date = fields['expires'] as Timestamp;
+
+          return FoodItem(
+              name: fields['name'].toString(),
+              quantity: fields['quantity'].toString(),
+              expires: date.toDate(),
+              shared: fields['shared'] as bool);
+        });
+      } else {
+        print('Does not exist for user: ' + user.uid);
+        return <FoodItem>[];
+      }
+    });
+  }
+
+  @override
   Future<String> addBubble(Bubble bubble) async {
     String id;
     DocumentReference docRef;
