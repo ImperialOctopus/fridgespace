@@ -43,7 +43,7 @@ class _HomeScreenState extends State<HomeScreen> {
       label: 'Fridge',
     ),
     BottomNavigationBarItem(
-      icon: Icon(Icons.star),
+      icon: Icon(Icons.fastfood),
       label: 'Feed',
     ),
     BottomNavigationBarItem(
@@ -61,7 +61,10 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(
+        title: const Text('FridgeSpace'),
+        leading: const Icon(Icons.kitchen),
+      ),
       body: SafeArea(
         child: PageView(
           controller: _pageController,
