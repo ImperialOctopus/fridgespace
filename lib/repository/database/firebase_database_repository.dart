@@ -113,21 +113,42 @@ class FirebaseDatabaseRepository implements DatabaseRepository {
 
   @override
   Future<void> joinBubble(String id) async {
-    // Add bubble to user
-    await FirebaseFirestore.instance
+    final bubble =
+        await FirebaseFirestore.instance.collection('bubbles').doc(id).get();
+
+    if (!bubble.exists) {
+      return;
+    } else {
+      // Add user to bubble
+      await FirebaseFirestore.instance
+          .collection('bubbles')
+          .doc(id)
+          .update(<String, dynamic>{
+        'memberIds': FieldValue.arrayUnion(<dynamic>[user.uid])
+      });
+    }
+
+    final userRecord = await FirebaseFirestore.instance
         .collection('users')
         .doc(user.uid)
-        .update(<String, dynamic>{
-      'bubbles': FieldValue.arrayUnion(<dynamic>[id])
-    });
+        .get();
 
-    // Add user to bubble
-    await FirebaseFirestore.instance
-        .collection('bubbles')
-        .doc(id)
-        .update(<String, dynamic>{
-      'members': FieldValue.arrayUnion(<dynamic>[user.uid])
-    });
+    // Add bubble to user
+    if (userRecord.exists) {
+      await FirebaseFirestore.instance
+          .collection('users')
+          .doc(user.uid)
+          .update(<String, dynamic>{
+        'bubbles': FieldValue.arrayUnion(<dynamic>[id])
+      });
+    } else {
+      await FirebaseFirestore.instance
+          .collection('users')
+          .doc(user.uid)
+          .set(<String, dynamic>{
+        'bubbles': FieldValue.arrayUnion(<dynamic>[id])
+      });
+    }
   }
 
   @override
