@@ -13,14 +13,25 @@ class AddItemScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        actions: [
+          FlatButton(
+            child: const Text('SAVE'),
+            onPressed: () {},
+          )
+        ],
+      ),
       body: SafeArea(
-        child: Column(
-          children: [
-            const Text('Add Item Screen'),
-            Text(lookupResult.toString()),
-            Text(lookupResult?.name ?? 'name missing'),
-            Text(lookupResult?.quantity ?? 'quantity missing'),
-          ],
+        child: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const Text('Add Item Screen'),
+              Text(lookupResult.toString()),
+              Text(lookupResult?.name ?? 'name missing'),
+              Text(lookupResult?.quantity ?? 'quantity missing'),
+            ],
+          ),
         ),
       ),
     );
