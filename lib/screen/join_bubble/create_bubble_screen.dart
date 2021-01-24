@@ -68,9 +68,10 @@ class _CreateBubbleScreenState extends State<CreateBubbleScreen> {
                                     loading = true;
                                   });
                                   try {
+                                    await print(await _roomCode);
                                     await RepositoryProvider.of<
                                             BubbleJoinService>(context)
-                                        .joinBubble(await roomCode);
+                                        .joinBubble(await _roomCode);
                                     roomName = _textController.text;
                                     roomCode = await _roomCode;
 
