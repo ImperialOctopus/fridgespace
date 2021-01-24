@@ -36,6 +36,7 @@ class FridgeSpaceApp extends StatelessWidget {
     return MaterialApp(
       title: 'Fridge Space',
       theme: themeData,
+      debugShowCheckedModeBanner: false,
       home: FutureBuilder(
         // Initialize firebase
         future: _firebaseApp,
