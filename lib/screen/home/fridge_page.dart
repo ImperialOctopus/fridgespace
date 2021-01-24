@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../repository/database/database_repository.dart';
 import '../../model/food_item.dart';
+import 'package:intl/intl.dart';
 
 /// Page to list items in the user's fridge.
 class FridgePage extends StatelessWidget {
@@ -28,8 +29,19 @@ class FridgePage extends StatelessWidget {
                       title: Text(x.name),
                       subtitle: Text('Qty: ' +
                           (x.quantity ?? 'unknown') +
-                          ' Expires: ' +
-                          (x.expires.toString() ?? 'unknown')),
+                          '\nExpires: ' +
+                          (x.expires != null
+                              ? DateFormat('dd/MM/yy').format(x.expires)
+                              : 'unknown')),
+                      trailing: IconButton(
+                        icon: Icon(
+                          Icons.share,
+                          color: x.shared ? Colors.pink : Colors.grey,
+                        ),
+                        onPressed: () {},
+                      ),
+                      contentPadding: const EdgeInsets.symmetric(
+                          vertical: 10, horizontal: 20),
                     ),
                   )
                   .toList());
