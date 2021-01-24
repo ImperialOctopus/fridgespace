@@ -41,3 +41,15 @@ class FoodlistChanged extends FoodlistEvent {
   @override
   List<Object> get props => [foodlist];
 }
+
+/// Error occurred fetching food list.
+class FoodlistError extends FoodlistState {
+  /// Error message to display.
+  final String message;
+
+  /// Error occurred fetching food list.
+  const FoodlistError([this.message = '']);
+
+  @override
+  List<Object> get props => [message];
+}

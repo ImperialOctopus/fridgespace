@@ -29,8 +29,12 @@ class FoodlistBloc extends Bloc<FoodlistEvent, FoodlistState> {
 
   Stream<FoodlistState> _mapLoadToState(LoadFoodlist event) async* {
     yield const FoodlistLoading();
-    final foodList = await _databaseRepository.getFoodItems();
-    yield FoodlistLoaded(foodlist: foodList);
+    try {
+      final foodList = await _databaseRepository.getFoodItems();
+      yield FoodlistLoaded(foodlist: foodList);
+    } catch (e) {
+      yield FoodlistError(e.toString());
+    }
   }
 
   Stream<FoodlistState> _mapAddToState(AddFoodItem event) async* {
