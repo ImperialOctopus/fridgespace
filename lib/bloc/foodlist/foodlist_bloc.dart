@@ -13,18 +13,22 @@ class FoodlistBloc extends Bloc<FoodlistEvent, FoodlistState> {
   FoodlistBloc({@required DatabaseRepository databaseRepository})
       : _databaseRepository = databaseRepository,
         super(FoodlistUnloaded()) {
-    _databaseRepository.foodlistStream
-        .listen((foodlist) => add(FoodlistChanged(foodlist: foodlist)));
+    _databaseRepository.foodlistStream.listen((foodlist) {
+      print(foodlist);
+      add(FoodlistChanged(foodlist: foodlist));
+    });
   }
 
   @override
   Stream<FoodlistState> mapEventToState(FoodlistEvent event) async* {
     if (event is LoadFoodlist) {
       yield* _mapLoadToState(event);
-    }
-    if (event is AddFoodItem) {
+    } else if (event is AddFoodItem) {
       yield* _mapAddToState(event);
+    } else if (event is FoodlistChanged) {
+      yield* _mapChangedToState(event);
     }
+    throw FallThroughError();
   }
 
   Stream<FoodlistState> _mapLoadToState(LoadFoodlist event) async* {
@@ -39,5 +43,9 @@ class FoodlistBloc extends Bloc<FoodlistEvent, FoodlistState> {
 
   Stream<FoodlistState> _mapAddToState(AddFoodItem event) async* {
     await _databaseRepository.addFoodItem(event.foodItem);
+  }
+
+  Stream<FoodlistState> _mapChangedToState(FoodlistChanged event) async* {
+    yield FoodlistLoaded(foodlist: event.foodlist);
   }
 }

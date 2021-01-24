@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../../repository/database/database_repository.dart';
-import '../../model/food_item.dart';
 import 'package:intl/intl.dart';
+
+import '../../bloc/foodlist/foodlist_bloc.dart';
+import '../../bloc/foodlist/foodlist_state.dart';
 
 /// Page to list items in the user's fridge.
 class FridgePage extends StatelessWidget {
@@ -11,12 +12,11 @@ class FridgePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<Iterable<FoodItem>>(
-      future: RepositoryProvider.of<DatabaseRepository>(context).getFoodItems(),
-      builder: (context, snapshot) {
-        if (snapshot.hasData) {
+    return BlocBuilder<FoodlistBloc, FoodlistState>(
+      builder: (context, state) {
+        if (state is FoodlistLoaded) {
           return ListView(
-              children: snapshot.data
+              children: state.foodlist
                   .map<Widget>(
                     (x) => ListTile(
                       title: Text(x.name),
@@ -38,9 +38,8 @@ class FridgePage extends StatelessWidget {
                     ),
                   )
                   .toList());
-        } else if (snapshot.hasError) {
-          print('Error: ' + snapshot.error.toString());
-          return Center(child: Text('Error: ' + snapshot.error.toString()));
+        } else if (state is FoodlistError) {
+          return Center(child: Text('Error: ' + state.message));
         } else {
           return const Center(child: CircularProgressIndicator());
         }
