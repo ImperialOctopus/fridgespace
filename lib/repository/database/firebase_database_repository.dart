@@ -58,7 +58,27 @@ class FirebaseDatabaseRepository implements DatabaseRepository {
   }
 
   @override
-  Stream<Iterable<FoodItem>> get foodlistStream async* {}
+  Stream<Iterable<FoodItem>> get foodlistStream {
+    return FirebaseFirestore.instance
+        .collection('users')
+        .doc(user.uid)
+        .collection('fridge')
+        .snapshots()
+        .map((QuerySnapshot snapShot) => snapShot.docs)
+        .map((documents) {
+      return documents.map((doc) {
+        final fields = doc.data();
+        final date = fields['expires'] as Timestamp;
+
+        return FoodItem(
+            uuid: doc.id,
+            name: fields['name'].toString(),
+            quantity: fields['quantity'].toString(),
+            expires: date.toDate(),
+            shared: fields['shared'] as bool);
+      });
+    });
+  }
 
   @override
   Future<String> addBubble(Bubble bubble) async {
