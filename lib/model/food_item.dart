@@ -11,11 +11,15 @@ class FoodItem {
   /// Best before or use by date.
   final DateTime expires;
 
+  /// Whether this item is okay for others to take.
+  final bool shared;
+
   /// Model of an item of food.
   const FoodItem({
     @required this.name,
     @required this.quantity,
     @required this.expires,
+    @required this.shared,
   });
 
   /// Converts this object to a json map.
@@ -23,5 +27,6 @@ class FoodItem {
         'name': name,
         'quantity': quantity,
         'expires': expires,
+        'shared': shared,
       };
 }
