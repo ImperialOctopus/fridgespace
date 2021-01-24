@@ -26,14 +26,20 @@ class FeedPage extends StatelessWidget {
                           x.offerer.pictureUrl,
                           width: 60,
                         ),
-                        title: Text(x.foodItem.name),
-                        subtitle: Text('Qty: ' +
-                            (x.foodItem.quantity ?? 'unknown') +
-                            '\nExpires: ' +
-                            (x.foodItem.expires != null
-                                ? DateFormat('dd/MM/yy')
-                                    .format(x.foodItem.expires)
-                                : 'unknown')),
+                        title: Text(
+                          x.foodItem.name,
+                          style: const TextStyle(fontSize: 18),
+                        ),
+                        subtitle: Text(
+                          'Quantity: ' +
+                              (x.foodItem.quantity ?? 'unknown') +
+                              (x.foodItem.expires != null
+                                  ? '\nExpires: ' +
+                                      DateFormat('dd/MM/yy')
+                                          .format(x.foodItem.expires)
+                                  : 'unknown'),
+                          style: const TextStyle(fontSize: 16),
+                        ),
                         trailing: IconButton(
                           icon: const Icon(
                             Icons.favorite,

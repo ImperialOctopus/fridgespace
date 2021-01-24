@@ -253,7 +253,7 @@ class FirebaseDatabaseRepository implements DatabaseRepository {
           uuid: doc.id,
           name: fields['name'].toString(),
           quantity: fields['quantity'].toString(),
-          expires: date.toDate(),
+          expires: date?.toDate(),
           shared: fields['shared'] as bool);
     });
   }
