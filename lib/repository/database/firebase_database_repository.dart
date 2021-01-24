@@ -36,8 +36,13 @@ class FirebaseDatabaseRepository implements DatabaseRepository {
 
   @override
   Future<String> addBubble(Bubble bubble) async {
-    // TODO: Check if key already exists
-    String id = _getRandomString(5);
+    String id;
+    DocumentReference docRef;
+
+    do {
+      id = _getRandomString(5);
+      docRef = await FirebaseFirestore.instance.collection('bubbles').doc(id);
+    } while ((await docRef.get()).exists);
 
     await FirebaseFirestore.instance
         .collection('bubbles')
