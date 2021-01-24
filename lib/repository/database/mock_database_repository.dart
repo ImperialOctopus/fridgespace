@@ -1,9 +1,8 @@
 import 'dart:async';
 
-import 'package:fridgespace/model/user_profile.dart';
-
 import '../../model/bubble.dart';
 import '../../model/food_item.dart';
+import '../../model/user_profile.dart';
 import 'database_repository.dart';
 
 /// Offline fake database for testing.

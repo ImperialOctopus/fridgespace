@@ -1,16 +1,11 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:fridgespace/model/bubble.dart';
-import 'package:fridgespace/model/food_item.dart';
-import 'package:fridgespace/model/offer.dart';
 
+import '../model/food_item.dart';
+import '../model/offer.dart';
 import '../repository/database/database_repository.dart';
 
 /// Service to get offers from database.
 class OfferService {
-  /// Signed in user.
-  final User user;
-
   /// Database repository.
   final DatabaseRepository databaseRepository;
 
@@ -18,7 +13,7 @@ class OfferService {
   const OfferService({@required this.databaseRepository});
 
   /// Get IDs of connected users.
-  Future<Set<String>> connectedUsers() async {
+  Future<Set<String>> getConnectedUsers() async {
     final myBubbleIds = await databaseRepository.getBubbleIds();
 
     // Get all IDs for connected users.
@@ -29,7 +24,7 @@ class OfferService {
     }));
 
     // Expand IDs into a set.
-    iterables.expand((element) => element).toSet();
+    return iterables.expand((element) => element).toSet();
   }
 
   /// Get all food shared by a user.
@@ -38,6 +33,7 @@ class OfferService {
         .where((foodItem) => foodItem.shared);
   }
 
+  /// Get offers from a single user.
   Future<Iterable<Offer>> getUsersOffers(String id) async {
     final sharedFood = await getSharedFood(id);
 
@@ -55,12 +51,17 @@ class OfferService {
     }
   }
 
-  Future<Iterable<Offer>> getAllOffers(Set<String> ids) async {
-    (await Future.wait<Iterable<Offer>>(
-      ids.map(
-        (id) => getUsersOffers(id),
-      ),
+  /// Get all available offers from a list of user ids.
+  Future<Iterable<Offer>> getAllOffersFromUsers(Set<String> ids) async {
+    return (await Future.wait<Iterable<Offer>>(
+      ids.map((id) => getUsersOffers(id)),
     ))
         .expand<Offer>((element) => element);
+  }
+
+  /// Get all offers from all connected users.
+  Future<Iterable<Offer>> getAllOffersFromConnectedUsers() async {
+    final users = await getConnectedUsers();
+    return getAllOffersFromUsers(users);
   }
 }
