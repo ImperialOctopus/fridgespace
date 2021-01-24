@@ -29,3 +29,27 @@ class BubblesChanged extends BubbleEvent {
   @override
   List<Object> get props => [bubbles];
 }
+
+/// Join a bubble by join code.
+class JoinBubble extends BubbleEvent {
+  /// Code for bubble to join.
+  final String code;
+
+  /// Join a bubble by join code.
+  const JoinBubble({@required this.code});
+
+  @override
+  List<Object> get props => [code];
+}
+
+/// Leave a bubble.
+class LeaveBubble extends BubbleEvent {
+  /// Bubble to leave.
+  final Bubble bubble;
+
+  /// Leave a bubble.
+  const LeaveBubble({@required this.bubble});
+
+  @override
+  List<Object> get props => [bubble];
+}
